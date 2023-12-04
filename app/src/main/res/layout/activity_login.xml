@@ -15,7 +15,7 @@
         android:layout_marginTop="120dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/kb_high_resolution_logo_transparent"/>
+        app:srcCompat="@drawable/kb_high_resolution_logo_transparent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/username"
@@ -26,13 +26,14 @@
         android:layout_marginTop="360dp"
         android:layout_marginEnd="24dp"
         android:hint="Username"
+        app:endIconMode="clear_text"
+        app:hintTextColor="@color/purple"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:hintTextColor="@color/purple"
         app:placeholderTextColor="@color/purple"
-        app:startIconDrawable="@drawable/account_circle"
-        app:endIconMode="clear_text">
+        app:startIconDrawable="@drawable/account_circle">
+
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/username2"
             android:layout_width="match_parent"
@@ -49,13 +50,13 @@
         android:layout_marginTop="440dp"
         android:layout_marginEnd="24dp"
         android:hint="Password"
+        app:endIconMode="password_toggle"
         app:hintTextColor="@color/purple"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:placeholderTextColor="@color/purple"
-        app:startIconDrawable="@android:drawable/ic_lock_lock"
-        app:endIconMode="password_toggle">
+        app:startIconDrawable="@android:drawable/ic_lock_lock">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/password2"
@@ -64,4 +65,34 @@
             android:textColor="@color/purple" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/loginbtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="530dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/caesar"
+        android:textColor="@color/black"
+        android:text="@string/login"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signupbtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="590dp"
+        android:layout_marginEnd="24dp"
+        android:fontFamily="@font/caesar"
+        android:text="@string/signup"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:backgroundTint="@color/black"
+        android:textColor="@color/purple"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
