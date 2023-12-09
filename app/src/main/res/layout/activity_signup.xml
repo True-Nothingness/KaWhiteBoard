@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="250dp"
         android:layout_marginEnd="24dp"
         android:hint="Email"
         app:endIconMode="clear_text"
@@ -42,12 +42,12 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/username"
+        android:id="@+id/name"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="350dp"
         android:layout_marginEnd="24dp"
         android:hint="Username"
         app:endIconMode="clear_text"
@@ -59,7 +59,7 @@
         app:startIconDrawable="@drawable/account_circle">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/username2"
+            android:id="@+id/name2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/purple" />
@@ -70,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="380dp"
+        android:layout_marginTop="450dp"
         android:layout_marginEnd="24dp"
         android:hint="Password"
         app:hintTextColor="@color/purple"
@@ -88,29 +88,6 @@
             android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordrp"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="460dp"
-        android:layout_marginEnd="24dp"
-        android:hint="Confirm Password"
-        app:hintTextColor="@color/purple"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:placeholderTextColor="@color/purple"
-        app:startIconDrawable="@android:drawable/ic_menu_rotate">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/passwordrp2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/purple"
-            android:inputType="textPassword"/>
-    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signupbtn"
