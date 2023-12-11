@@ -1,7 +1,11 @@
 package com.whiteboard.kobo.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Login {
+    @SerializedName("email")
     private String email;
+    @SerializedName("password")
     private String password;
 
     public Login() {
@@ -12,19 +16,19 @@ public class Login {
         this.password = password;
     }
 
-    public String getUserEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public String getUserPwd() {
-        return password;
-    }
-
-    public void setUserEmail(String userEmail) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public void setUserPwd(String userPwd) {
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
         this.password = password;
     }
 }

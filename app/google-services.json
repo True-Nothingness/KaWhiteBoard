@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "777277695754",
+    "firebase_url": "https://kobo-660fe-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "kobo-660fe",
+    "storage_bucket": "kobo-660fe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:777277695754:android:1670ccc4c951893a31bcf3",
+        "android_client_info": {
+          "package_name": "com.whiteboard.kobo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "777277695754-koh8bsl0bc0sbltvma0pbh8u786oe1b6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.whiteboard.kobo",
+            "certificate_hash": "4ac033ab919b76ffb0ac89b1c3a7646aece84c9c"
+          }
+        },
+        {
+          "client_id": "777277695754-go6k5572b3s4h3acs3a69q03rrmrafad.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOm4TgihAcQN2mRIooiMdWKqCpxPmfgkA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "777277695754-go6k5572b3s4h3acs3a69q03rrmrafad.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

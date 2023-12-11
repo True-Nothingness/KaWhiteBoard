@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
                 v -> {
                     emailInput = email2.getText().toString();
                     pwdInput = password2.getText().toString();
-                    logIn();
+                    logIn(emailInput, pwdInput);
                     if (success){startActivity(loginIntent);}
                 }
         );
@@ -47,11 +47,10 @@ public class LoginActivity extends AppCompatActivity {
                 v -> startActivity(loginIntent2)
         );
     }
-    private void logIn(){
+    private void logIn(String email, String password){
         Login login = new Login();
-        login.setUserEmail(emailInput);
-        login.setUserPwd(pwdInput);
-
+        login.setEmail(email);
+        login.setPassword(password);
         apiService.apiService.logIn(login).enqueue(new Callback<Login>() {
             @Override
             public void onResponse(Call<Login> call, Response<Login> response) {

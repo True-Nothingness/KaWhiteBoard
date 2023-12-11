@@ -24,6 +24,7 @@ EditText    password2;
 String pwdInput;
 String nameInput;
 String emailInput;
+boolean success = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,44 +40,46 @@ String emailInput;
                     emailInput = email2.getText().toString();
                     nameInput = name2.getText().toString();
                     pwdInput = password2.getText().toString();
-                    registerUser();
+                    registerUser(nameInput,emailInput,pwdInput);
                     startActivity(signupIntent);
                 }
         );
     }
-    private void logIn(){
+    private void logIn(String email, String password){
         Login login = new Login();
-        login.setUserEmail(emailInput);
-        login.setUserPwd(pwdInput);
-
+        login.setEmail(email);
+        login.setPassword(password);
         apiService.apiService.logIn(login).enqueue(new Callback<Login>() {
             @Override
             public void onResponse(Call<Login> call, Response<Login> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(SignupActivity.this,"Login Successfully", Toast.LENGTH_SHORT).show();
+                    success = true;
+                    Toast.makeText(SignupActivity.this,"Signup Successfully", Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(SignupActivity.this,"Login Unsuccessfully, please check your info", Toast.LENGTH_SHORT).show();
+                    success = false;
+                    Toast.makeText(SignupActivity.this,"Signup Unsuccessfully, please check your info", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Login> call, Throwable t) {
+                success = false;
                 Toast.makeText(SignupActivity.this,"Login Error", Toast.LENGTH_SHORT).show();
             }
         });
     }
-    private void registerUser(){
+    private void registerUser(String userName, String userEmail, String userPwd){
         Register register = new Register();
-        register.setUserEmail(emailInput);
-        register.setUserName(nameInput);
-        register.setUserPwd(pwdInput);
+        register.setUserEmail(userEmail);
+        register.setUserName(userName);
+        register.setUserPwd(userPwd);
 
         apiService.apiService.createUser(register).enqueue(new Callback<Register>() {
             @Override
             public void onResponse(Call<Register> call, Response<Register> response) {
                 if (response.isSuccessful()) {
                 Toast.makeText(SignupActivity.this,"Register Successfully", Toast.LENGTH_SHORT).show();
-                    logIn();
+                    logIn(emailInput, pwdInput);
             }else {
                     Toast.makeText(SignupActivity.this,"Register Unsuccessfully, please check your info", Toast.LENGTH_SHORT).show();
                 }

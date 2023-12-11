@@ -1,8 +1,13 @@
 package com.whiteboard.kobo.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Register {
+    @SerializedName("name")
     private String userName;
+    @SerializedName("email")
     private String userEmail;
+    @SerializedName("password")
     private String userPwd;
 
     public String getUserName() {

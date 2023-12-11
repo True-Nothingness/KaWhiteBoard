@@ -8,6 +8,6 @@
     <string name="previous">Previous</string>
     <string name="login">Log In</string>
     <string name="signup">Sign Up</string>
-
+    <string name="limit">At least 6 characters</string>
 
 </resources>
