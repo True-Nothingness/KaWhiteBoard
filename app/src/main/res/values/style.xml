@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="my_files">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#8967F2</item>
+    </style>
+    <style name="shared_with">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#8967F2</item>
+    </style>
+    <style name="sign_out">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">#8967F2</item>
+    </style>
+
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="my_files" translatable="false">
+My Files
+</string>
+    <string name="shared_with" translatable="false">
+Shared with me
+</string>
+    <string name="sign_out" translatable="false">
+Sign out
+</string>
+    <string name="app_name" translatable="false">Navigation Drawer</string>
+    <string name="open_nav" translatable="false">Open Navigation Drawer</string>
+    <string name="close_nav" translatable="false">Close Navigation Drawer</string>
+</resources>
