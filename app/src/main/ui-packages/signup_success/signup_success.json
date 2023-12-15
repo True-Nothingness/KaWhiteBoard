@@ -1,0 +1,142 @@
+{
+  "name": "signup_success",
+  "version": 32,
+  "source-key": {
+    "type": "figma",
+    "file": "xytvwVKmShzhmOY7o1QOzv",
+    "node": "132:121",
+    "version": "4776699780",
+    "component-id": "a7a95ee409b213db8083fb0a54c867bfd2d75717"
+  },
+  "default": "Signup success",
+  "documentation": "Login, Signup success screen",
+  "design": {
+    "atoms": [
+      {
+        "type": "group",
+        "id": "top_level",
+        "root": "true"
+      },
+      {
+        "type": "image",
+        "id": "logo-no-background 1"
+      },
+      {
+        "type": "text",
+        "id": "WELCOME!"
+      },
+      {
+        "type": "text",
+        "id": "Please wait while we get you in"
+      }
+    ],
+    "modes": {
+      "Signup success": {
+        "rules": [
+          {
+            "id": "top_level",
+            "is-structured": "false",
+            "children": [
+              "logo-no-background 1",
+              "WELCOME!",
+              "Please wait while we get you in"
+            ],
+            "background-color": {
+              "alpha": "1.0",
+              "hue": "0.0",
+              "saturation": "0.16",
+              "value": "0.09803921568627451"
+            }
+          },
+          {
+            "id": "logo-no-background 1",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": "30.0"
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": "63.0"
+              }
+            },
+            "size-constraints": {
+              "width-constraints": {
+                "sizing-mode": "fixed",
+                "value": "300.0"
+              },
+              "height-constraints": {
+                "sizing-mode": "fixed",
+                "value": "337.3999938964844"
+              }
+            },
+            "image-content": "logo_no_background_1.png",
+            "scale": "cover"
+          },
+          {
+            "id": "WELCOME!",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": "83.0"
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": "472.0"
+              }
+            },
+            "color": {
+              "alpha": "1.0",
+              "hue": "274.35897435897436",
+              "saturation": "0.5294117647058824",
+              "value": "0.8666666666666667"
+            },
+            "text-content": "WELCOME!",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": "48.0",
+            "line-height": "0.5833333206176757",
+            "typeface": "Caesar Dressing"
+          },
+          {
+            "id": "Please wait while we get you in",
+            "alignment": {
+              "horizontal": {
+                "attachment": "start",
+                "offset": "43.0"
+              },
+              "vertical": {
+                "attachment": "start",
+                "offset": "572.0"
+              }
+            },
+            "color": {
+              "alpha": "1.0",
+              "hue": "274.35897435897436",
+              "saturation": "0.5294117647058824",
+              "value": "0.8666666666666667"
+            },
+            "text-content": "Please wait while we get you in",
+            "overflow": "visible",
+            "text-align": "left",
+            "text-size": "20.0",
+            "line-height": "1.4",
+            "typeface": "Lato"
+          }
+        ]
+      }
+    }
+  },
+  "previews": [
+    {
+      "design": "Signup success",
+      "size": {
+        "width": 360.0,
+        "height": 800.0
+      }
+    }
+  ],
+  "adin-component-search-paths": [],
+  "image-search-paths": [],
+  "vector-search-paths": []
+}

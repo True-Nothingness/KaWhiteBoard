@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "777277695754",
+    "project_id": "kobo-660fe",
+    "storage_bucket": "kobo-660fe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:777277695754:android:1670ccc4c951893a31bcf3",
+        "android_client_info": {
+          "package_name": "com.whiteboard.kobo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOm4TgihAcQN2mRIooiMdWKqCpxPmfgkA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
