@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.whiteboard.kobo.api.apiService;
 import com.whiteboard.kobo.model.Login;
+
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +43,16 @@ public class LoginActivity extends AppCompatActivity {
                     emailInput = email2.getText().toString();
                     pwdInput = password2.getText().toString();
                     logIn(emailInput, pwdInput);
-                    if (success){startActivity(loginIntent);}
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // The code inside this run() method will be executed after a 3-second delay
+                            if (success) {
+                                startActivity(loginIntent);
+                            }
+                            // Handle other UI updates or show error messages if needed
+                        }
+                    }, 1500);
                 }
         );
         signupbtn.setOnClickListener(
