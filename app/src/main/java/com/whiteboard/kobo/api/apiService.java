@@ -32,13 +32,11 @@ public interface apiService {
             .build();
 
     apiService apiService = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.224:3000/api/")
+            .baseUrl("https://d359-2405-4803-fc38-1190-f093-576-3412-74a0.ngrok-free.app/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(logs)
             .build()
             .create(apiService.class);
-    @GET("users")
-    Call<List<User>> FetchUsers();
     @POST("auth/register")
     @Headers("Content-Type: application/json")
     Call<Register> createUser(@Body Register register);

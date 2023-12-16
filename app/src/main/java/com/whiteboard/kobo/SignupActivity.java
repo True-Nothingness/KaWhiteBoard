@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -41,7 +42,16 @@ boolean success = false;
                     nameInput = name2.getText().toString();
                     pwdInput = password2.getText().toString();
                     registerUser(nameInput,emailInput,pwdInput);
-                    startActivity(signupIntent);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // The code inside this run() method will be executed after a 3-second delay
+                            if (success) {
+                                startActivity(signupIntent);
+                            }
+                            // Handle other UI updates or show error messages if needed
+                        }
+                    }, 2000);
                 }
         );
     }
