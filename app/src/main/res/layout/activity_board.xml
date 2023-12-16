@@ -6,20 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".BoardActivity">
 
-    <com.mihir.drawingcanvas.drawingView
-        android:id="@+id/drawing_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
-
-    </com.mihir.drawingcanvas.drawingView>
-
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/home_button"
         android:layout_width="wrap_content"
@@ -27,18 +13,54 @@
         android:layout_gravity="top|left"
         android:layout_margin="16dp"
         android:contentDescription="Home"
-        app:layout_constraintStart_toStartOf="@+id/drawing_view"
-        app:layout_constraintTop_toTopOf="@+id/drawing_view"
-        app:srcCompat="@drawable/baseline_home_black_24dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_home_black_24dp"></com.google.android.material.floatingactionbutton.FloatingActionButton>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_button"
+    <com.mihir.drawingcanvas.drawingView
+        android:id="@+id/drawing_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"></com.mihir.drawingcanvas.drawingView>
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/purple"
+            app:backgroundTint="@color/purple"
+            app:menu="@menu/bottom_menu"
+            android:layout_gravity="bottom"
+            app:fabAlignmentMode="end"
+            app:fabCradleMargin="20dp"
+            app:fabCradleRoundedCornerRadius="30dp"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/pink"
+            android:contentDescription="More"
+            android:src="@drawable/outline_add_24"
+            app:layout_anchor="@id/bottomAppBar"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.github.dhaval2404.colorpicker.ColorPickerView
+        android:id="@+id/colorView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        android:contentDescription="Add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/drawing_view"
-        app:srcCompat="@drawable/outline_add_24" />
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

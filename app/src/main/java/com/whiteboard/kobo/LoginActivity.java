@@ -12,7 +12,9 @@ import android.widget.Toast;
 
 import com.whiteboard.kobo.api.apiService;
 import com.whiteboard.kobo.model.Login;
-
+import com.whiteboard.kobo.model.LoginResponse;
+import com.whiteboard.kobo.model.User;
+import com.whiteboard.kobo.model.UserData;
 
 
 import retrofit2.Call;
@@ -31,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Intent loginIntent = new Intent(this, HomeActivity.class);
+        Intent loginIntent = new Intent(this, BoardActivity.class);
         Intent loginIntent2 = new Intent(this, SignupActivity.class);
         loginbtn = findViewById(R.id.loginbtn);
         signupbtn = findViewById(R.id.signupbtn);
@@ -63,23 +65,39 @@ public class LoginActivity extends AppCompatActivity {
         Login login = new Login();
         login.setEmail(email);
         login.setPassword(password);
-        apiService.apiService.logIn(login).enqueue(new Callback<Login>() {
+        apiService.apiService.logIn(login).enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<Login> call, Response<Login> response) {
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
+                    LoginResponse loginResponse = response.body();
+                    String token = loginResponse.getToken();
+                    User user = loginResponse.getUser();
+
+                    // Handle the extracted information as needed
+                    String userId = user.getId();
+                    String userName = user.getName();
+                    String userEmail = user.getEmail();
+                    UserData.getInstance().setUsername(userName);
+                    UserData.getInstance().setEmail(userEmail);
+                    UserData.getInstance().setId(userId);
+
+                    // Your success handling logic
                     success = true;
-                Toast.makeText(LoginActivity.this,"Login Successfully", Toast.LENGTH_SHORT).show();
-            }else {
+                    Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Handle unsuccessful response
                     success = false;
-                    Toast.makeText(LoginActivity.this,"Login Unsuccessfully, please check your info", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Login Unsuccessfully, please check your info", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Login> call, Throwable t) {
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                // Handle network errors or request failure
                 success = false;
-                Toast.makeText(LoginActivity.this,"Login Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Login Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 }

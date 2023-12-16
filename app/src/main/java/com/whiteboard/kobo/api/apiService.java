@@ -3,6 +3,7 @@ package com.whiteboard.kobo.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.whiteboard.kobo.model.Login;
+import com.whiteboard.kobo.model.LoginResponse;
 import com.whiteboard.kobo.model.Register;
 import com.whiteboard.kobo.model.User;
 
@@ -32,7 +33,7 @@ public interface apiService {
             .build();
 
     apiService apiService = new Retrofit.Builder()
-            .baseUrl("https://d359-2405-4803-fc38-1190-f093-576-3412-74a0.ngrok-free.app/api/")
+            .baseUrl("http://192.168.1.224:3000/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(logs)
             .build()
@@ -42,5 +43,6 @@ public interface apiService {
     Call<Register> createUser(@Body Register register);
     @POST("auth/login")
     @Headers("Content-Type: application/json")
-    Call<Login> logIn(@Body Login login);
+    Call<LoginResponse> logIn(@Body Login login);
+
 }

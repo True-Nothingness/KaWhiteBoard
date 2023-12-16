@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/brushSize"
+        android:title="Brush Size"
+        android:icon="@drawable/stylus_note_fill0_wght400_grad0_opsz24"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/brushOpacity"
+        android:title="Transparency"
+        android:icon="@drawable/opacity_fill0_wght400_grad0_opsz24"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/brushColor"
+        android:title="Color"
+        android:icon="@drawable/palette_fill0_wght400_grad0_opsz24"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/eraser"
+        android:title="Eraser"
+        android:icon="@drawable/ink_eraser_fill0_wght400_grad0_opsz24"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/undo"
+        android:title="Undo"
+        android:icon="@drawable/undo_fill0_wght400_grad0_opsz24"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/redo"
+        android:title="Redo"
+        android:icon="@drawable/redo_fill0_wght400_grad0_opsz24"
+        app:showAsAction="always"/>
+</menu>
