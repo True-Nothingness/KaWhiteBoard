@@ -5,6 +5,7 @@ public class UserData {
     private String username;
     private String email;
     private String id;
+    private String token;
 
     private UserData() {
         // Private constructor to prevent instantiation
@@ -39,5 +40,13 @@ public class UserData {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

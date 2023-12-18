@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
@@ -33,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Intent loginIntent = new Intent(this, BoardActivity.class);
+        Intent loginIntent = new Intent(this, HomeActivity.class);
         Intent loginIntent2 = new Intent(this, SignupActivity.class);
         loginbtn = findViewById(R.id.loginbtn);
         signupbtn = findViewById(R.id.signupbtn);
@@ -65,12 +66,13 @@ public class LoginActivity extends AppCompatActivity {
         Login login = new Login();
         login.setEmail(email);
         login.setPassword(password);
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         apiService.apiService.logIn(login).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
                     LoginResponse loginResponse = response.body();
-                    String token = loginResponse.getToken();
+                    String authToken = loginResponse.getToken();
                     User user = loginResponse.getUser();
 
                     // Handle the extracted information as needed
@@ -80,6 +82,11 @@ public class LoginActivity extends AppCompatActivity {
                     UserData.getInstance().setUsername(userName);
                     UserData.getInstance().setEmail(userEmail);
                     UserData.getInstance().setId(userId);
+                    UserData.getInstance().setToken(authToken);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("authToken", authToken);
+                    editor.putString("userEmail", userEmail);
+                    editor.apply();
 
                     // Your success handling logic
                     success = true;

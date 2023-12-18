@@ -8,6 +8,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -15,9 +17,11 @@ import com.whiteboard.kobo.FilesFragment;
 import com.whiteboard.kobo.SharedFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.whiteboard.kobo.R;
+import com.whiteboard.kobo.model.UserData;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private DrawerLayout drawerLayout;
+    private TextView navHeaderTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FilesFragment()).commit();
             navigationView.setCheckedItem(R.id.my_files);
         }
+        View headerView = navigationView.getHeaderView(0);
+        navHeaderTextView = headerView.findViewById(R.id.nametag);
+        navHeaderTextView.setText(UserData.getInstance().getUsername());
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item){

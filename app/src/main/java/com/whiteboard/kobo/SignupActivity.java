@@ -3,6 +3,7 @@ package com.whiteboard.kobo;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
@@ -62,12 +63,13 @@ boolean success = false;
         Login login = new Login();
         login.setEmail(email);
         login.setPassword(password);
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         apiService.apiService.logIn(login).enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
                     LoginResponse loginResponse = response.body();
-                    String token = loginResponse.getToken();
+                    String authToken = loginResponse.getToken();
                     User user = loginResponse.getUser();
 
                     // Handle the extracted information as needed
@@ -77,7 +79,10 @@ boolean success = false;
                     UserData.getInstance().setUsername(userName);
                     UserData.getInstance().setEmail(userEmail);
                     UserData.getInstance().setId(userId);
-
+                    UserData.getInstance().setToken(authToken);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("authToken", authToken);
+                    editor.apply();
                     // Your success handling logic
                     success = true;
                     Toast.makeText(SignupActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
