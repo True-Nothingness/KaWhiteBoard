@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.whiteboard.kobo" />
-                  <option name="mobileSdkAppId" value="1:777277695754:android:1670ccc4c951893a31bcf3" />
-                  <option name="projectId" value="kobo-660fe" />
-                  <option name="projectNumber" value="777277695754" />
+                  <option name="appId" value="PLACEHOLDER" />
+                  <option name="mobileSdkAppId" value="" />
+                  <option name="projectId" value="" />
+                  <option name="projectNumber" value="" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
