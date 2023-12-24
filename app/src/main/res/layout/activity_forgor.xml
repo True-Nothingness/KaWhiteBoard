@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
-
-
+    tools:context=".ForgorActivity">
     <ImageView
         android:id="@+id/LoginLogo"
         android:layout_width="180dp"
@@ -16,14 +14,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/kb_high_resolution_logo_transparent" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="360dp"
+        android:layout_marginTop="420dp"
         android:layout_marginEnd="24dp"
         android:hint="Email"
         app:endIconMode="clear_text"
@@ -41,33 +38,22 @@
             android:textColor="@color/purple" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/password"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="440dp"
-        android:layout_marginEnd="24dp"
-        android:hint="Password"
-        app:endIconMode="password_toggle"
-        app:hintTextColor="@color/purple"
+        android:layout_marginStart="129dp"
+        android:layout_marginTop="51dp"
+        android:layout_marginEnd="129dp"
+        android:fontFamily="@font/caesar"
+        android:text="Reset Password"
+        android:textSize="24sp"
+        android:textColor="@color/purple"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:placeholderTextColor="@color/purple"
-        app:startIconDrawable="@android:drawable/ic_lock_lock">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/password2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/purple"
-            android:inputType="textPassword"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
+        app:layout_constraintTop_toBottomOf="@+id/LoginLogo" />
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/loginbtn"
+        android:id="@+id/resetbtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -75,41 +61,9 @@
         android:layout_marginEnd="24dp"
         android:fontFamily="@font/caesar"
         android:textColor="@color/black"
-        android:text="@string/login"
-        android:textSize="20dp"
+        android:text="proceed"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/signupbtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="590dp"
-        android:layout_marginEnd="24dp"
-        android:fontFamily="@font/caesar"
-        android:text="@string/signup"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:backgroundTint="@color/black"
-        android:textColor="@color/purple"/>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="149dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="152dp"
-        android:fontFamily="@font/caesar"
-        android:text="Forgot Password?"
-        android:textColor="@color/purple"
-        android:textSize="14sp"
-        android:textColorHighlight="@color/purple"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signupbtn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

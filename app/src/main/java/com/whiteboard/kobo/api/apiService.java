@@ -1,15 +1,18 @@
 package com.whiteboard.kobo.api;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.whiteboard.kobo.model.Forgor;
 import com.whiteboard.kobo.model.Login;
 import com.whiteboard.kobo.model.LoginResponse;
+import com.whiteboard.kobo.model.PwdReset;
 import com.whiteboard.kobo.model.Register;
 import com.whiteboard.kobo.model.User;
 import com.whiteboard.kobo.model.UserData;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -32,6 +35,7 @@ public interface apiService {
             .create();
     HttpLoggingInterceptor logging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
     class AuthInterceptor implements Interceptor {
+        @NonNull
         @Override
         public Response intercept(Chain chain) throws IOException {
             // Retrieve the token from your UserData singleton or wherever it is stored
@@ -71,6 +75,10 @@ public interface apiService {
     Call<LoginResponse> logIn(@Body Login login);
     @GET("users")
     Call<User> getUserByEmail(@Query("email") String email);
-
-
+    @POST("password-reset/")
+    @Headers("Content-Type: application/json")
+    Call<Forgor> forgotPasword(@Body Forgor forgor);
+    @POST("password-reset/link")
+    @Headers("Content-Type: application/json")
+    Call<PwdReset> resetPassword(@Body PwdReset pwdreset);
 }

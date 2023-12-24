@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.whiteboard.kobo.api.apiService;
@@ -27,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     Button signupbtn;
     EditText email2;
     EditText password2;
+    TextView textView2;
     String emailInput;
     String pwdInput;
     boolean success = false;
@@ -36,10 +38,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         Intent loginIntent = new Intent(this, HomeActivity.class);
         Intent loginIntent2 = new Intent(this, SignupActivity.class);
+        Intent loginIntent3 = new Intent(this, ForgorActivity.class);
         loginbtn = findViewById(R.id.loginbtn);
         signupbtn = findViewById(R.id.signupbtn);
         email2 = findViewById(R.id.email2);
         password2 = findViewById(R.id.password2);
+        textView2 = findViewById(R.id.textView2);
 
         loginbtn.setOnClickListener(
                 v -> {
@@ -60,6 +64,9 @@ public class LoginActivity extends AppCompatActivity {
         );
         signupbtn.setOnClickListener(
                 v -> startActivity(loginIntent2)
+        );
+        textView2.setOnClickListener(
+                v -> startActivity(loginIntent3)
         );
     }
     private void logIn(String email, String password){
