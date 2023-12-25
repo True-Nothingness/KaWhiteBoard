@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Intent loginIntent = new Intent(this, HomeActivity.class);
+        Intent loginIntent = new Intent(this, BoardActivity.class);
         Intent loginIntent2 = new Intent(this, SignupActivity.class);
         Intent loginIntent3 = new Intent(this, ForgorActivity.class);
         loginbtn = findViewById(R.id.loginbtn);
@@ -56,10 +56,12 @@ public class LoginActivity extends AppCompatActivity {
                             // The code inside this run() method will be executed after a 3-second delay
                             if (success) {
                                 startActivity(loginIntent);
+                                finish();
                             }
                             // Handle other UI updates or show error messages if needed
                         }
                     }, 1500);
+                    success=false;
                 }
         );
         signupbtn.setOnClickListener(
@@ -93,6 +95,8 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("authToken", authToken);
                     editor.putString("userEmail", userEmail);
+                    editor.putString("userName", userName);
+                    editor.putString("userId", userId);
                     editor.apply();
 
                     // Your success handling logic

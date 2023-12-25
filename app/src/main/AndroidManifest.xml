@@ -16,9 +16,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".MyBottomSheetDialogFragment"
+            android:exported="false" />
+        <activity
+            android:name=".BottomSheetDialogFragment"
+            android:exported="false" />
+        <activity
             android:name=".ResetActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".ForgorActivity"
             android:exported="false" />

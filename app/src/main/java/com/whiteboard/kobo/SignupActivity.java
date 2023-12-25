@@ -56,6 +56,7 @@ boolean success = false;
                             // Handle other UI updates or show error messages if needed
                         }
                     }, 2000);
+                    finish();
                 }
         );
     }
@@ -82,6 +83,9 @@ boolean success = false;
                     UserData.getInstance().setToken(authToken);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("authToken", authToken);
+                    editor.putString("userEmail", userEmail);
+                    editor.putString("userName", userName);
+                    editor.putString("userId", userId);
                     editor.apply();
                     // Your success handling logic
                     success = true;

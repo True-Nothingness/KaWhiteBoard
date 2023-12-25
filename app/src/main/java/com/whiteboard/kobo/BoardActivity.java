@@ -5,11 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
+
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mihir.drawingcanvas.drawingView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -31,30 +40,57 @@ public class BoardActivity extends AppCompatActivity {
     BottomAppBar bottomAppBar;
     drawingView  drawing_view;
     private int selectedColor = 0;
+    FloatingActionButton expand;
+    RelativeLayout relativeLayout;
+    SeekBar brushSizeSeekbar;
+    SeekBar brushOpacitySeekbar;
+    TextView sizeLabel;
+    TextView opacityLabel;
+    Button set;
+    MaterialToolbar topBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CanvasView canvasView;
-        canvasView = new CanvasView((Context) this, (AttributeSet) this);
-        setContentView(canvasView);
-        bottomAppBar = findViewById(R.id.bottomAppBar);
+        canvasView = new CanvasView((Context) this);
+        setContentView(R.layout.activity_board);
+        Intent homeIntent = new Intent(this, HomeActivity.class);
+        topBar = findViewById(R.id.topAppBar);
         drawing_view = findViewById(R.id.drawing_view);
-        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        expand = findViewById(R.id.expandButton);
+        relativeLayout = findViewById(R.id.seekbars);
+        brushSizeSeekbar = findViewById(R.id.brushSizeSeekBar);
+        brushOpacitySeekbar = findViewById(R.id.brushOpacitySeekBar);
+        sizeLabel = findViewById(R.id.brushSizeLabel);
+        opacityLabel = findViewById(R.id.brushOpacityLabel);
+        set = findViewById(R.id.set);
+        expand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MyBottomSheetDialogFragment bottomSheetFragment = new MyBottomSheetDialogFragment();
+                bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+            }
+        });
+        topBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(homeIntent);
+            }
+        });
+        topBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.undo)
-                    drawing_view.undo();
-                else if (item.getItemId() == R.id.redo) {
+                if(item.getItemId()==R.id.redo){
                     drawing_view.redo();
-                } else if (item.getItemId() == R.id.brushColor) {
-                    showColorPickerDialog();
-                } else if (item.getItemId()==R.id.eraser) {
-                    drawing_view.erase(android.R.color.white);
+                }
+                if(item.getItemId()==R.id.undo){
+                    drawing_view.undo();
                 }
                 return false;
             }
         });
+
     }
     public class CanvasView extends View {
 
@@ -63,8 +99,8 @@ public class BoardActivity extends AppCompatActivity {
         private Rect bounds;
         private Point current = new Point(0, 0);
         private List<Overlay> overlays;
-        public CanvasView(Context context, AttributeSet attrs) {
-            super(context, attrs);
+        public CanvasView(Context context) {
+            super(context);
             bounds = new Rect();
             panning = new Panning();
             overlays = new ArrayList<>();
@@ -122,7 +158,7 @@ public class BoardActivity extends AppCompatActivity {
             this.overlays.add(overlay);
         }
     }
-    private void showColorPickerDialog() {
+    public void showColorPickerDialog() {
         AmbilWarnaDialog colorPicker = new AmbilWarnaDialog(this, selectedColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
             public void onCancel(AmbilWarnaDialog dialog) {
@@ -139,5 +175,61 @@ public class BoardActivity extends AppCompatActivity {
             }
         });
         colorPicker.show();
+    }
+    public void updateBrushSizeLabel(int size) {
+        sizeLabel.setText("Brush Size: " + size);
+        // You can also update your brush size or perform other actions here
+    }
+    public void updateBrushOpacityLabel(int alpha) {
+        opacityLabel.setText("Brush Opacity: " + alpha);
+        // You can also update your brush size or perform other actions here
+    }
+    private void toggleSeekBar() {
+        int visibility = relativeLayout.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE;
+        relativeLayout.setVisibility(visibility);
+        relativeLayout.setVisibility(visibility);
+    }
+    public void getSeekbars(){
+        toggleSeekBar();
+        updateBrushSizeLabel(brushSizeSeekbar.getProgress());
+        updateBrushOpacityLabel(brushOpacitySeekbar.getProgress());
+        brushSizeSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // Handle progress change, e.g., update brush size label
+                updateBrushSizeLabel(progress);
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Called when user starts dragging the SeekBar
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                drawing_view.setSizeForBrush(brushSizeSeekbar.getProgress());
+            }
+        });
+        brushOpacitySeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // Handle progress change, e.g., update brush size label
+                updateBrushOpacityLabel(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Called when user starts dragging the SeekBar
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                drawing_view.setBrushAlpha(brushOpacitySeekbar.getProgress());
+            }
+        });
+        set.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleSeekBar();
+            }
+        });
     }
 }

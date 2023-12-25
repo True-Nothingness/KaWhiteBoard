@@ -7,11 +7,6 @@
         android:icon="@drawable/stylus_note_fill0_wght400_grad0_opsz24"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/brushOpacity"
-        android:title="Transparency"
-        android:icon="@drawable/opacity_fill0_wght400_grad0_opsz24"
-        app:showAsAction="always"/>
-    <item
         android:id="@+id/brushColor"
         android:title="Color"
         android:icon="@drawable/palette_fill0_wght400_grad0_opsz24"

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/gridLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:columnCount="4"
+    android:padding="20dp"
+    android:rowCount="2"
+    android:backgroundTint="@color/white"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/itemContainer1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <ImageButton
+            android:id="@+id/itemButton1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="Insert Text"
+            android:src="@drawable/title_fill0_wght400_grad0_opsz24"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/itemLabel1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Text"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemContainer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <ImageButton
+            android:id="@+id/itemButton2"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="Adjust pen attributes"
+            android:src="@drawable/stylus_note_fill0_wght400_grad0_opsz24"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/itemLabel2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pen"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemContainer3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:textSize="16sp">
+
+        <ImageButton
+            android:id="@+id/itemButton3"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="Change pen color"
+            android:src="@drawable/palette_fill0_wght400_grad0_opsz24"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/itemLabel3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Color"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemContainer4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <ImageButton
+            android:id="@+id/itemButton4"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="Erase"
+            android:src="@drawable/ink_eraser_fill0_wght400_grad0_opsz24"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/itemLabel4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Eraser"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemContainer5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <ImageButton
+            android:id="@+id/itemButton5"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="Draw shapes"
+            android:src="@drawable/shapes_fill0_wght400_grad0_opsz24"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/itemLabel5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shapes"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemContainer6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <ImageButton
+            android:id="@+id/itemButton6"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="Insert images"
+            android:src="@drawable/imagesmode_fill0_wght400_grad0_opsz24"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/itemLabel6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Images"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemContainer7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <ImageButton
+            android:id="@+id/itemButton7"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="Scan text from images"
+            android:src="@drawable/document_scanner_fill0_wght400_grad0_opsz24"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/itemLabel7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Scanner"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemContainer8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <ImageButton
+            android:id="@+id/itemButton8"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/ios_share_fill0_wght400_grad0_opsz24"
+            android:textColor="@color/black"
+            android:contentDescription="Export to image"/>
+
+        <TextView
+            android:id="@+id/itemLabel8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Export"
+            android:textSize="16sp"
+            android:textColor="@color/black"/>
+    </LinearLayout>
+</GridLayout>

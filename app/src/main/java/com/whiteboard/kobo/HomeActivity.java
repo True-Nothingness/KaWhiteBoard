@@ -6,6 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,8 +42,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.my_files);
         }
         View headerView = navigationView.getHeaderView(0);
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         navHeaderTextView = headerView.findViewById(R.id.nametag);
-        navHeaderTextView.setText(UserData.getInstance().getUsername());
+        navHeaderTextView.setText(preferences.getString("userName", null));
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item){
@@ -53,6 +57,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.logout:
                 Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
+                SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.remove("authToken");
+                editor.remove("userEmail");
+                editor.remove("userName");
+                editor.remove("userId");
+                editor.apply();
+                Intent logOut = new Intent(this,LoginActivity.class);
+                startActivity(logOut);
+                finish();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);

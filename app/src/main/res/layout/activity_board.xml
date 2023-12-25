@@ -1,21 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".BoardActivity">
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/home_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|left"
-        android:layout_margin="16dp"
-        android:contentDescription="Home"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_home_black_24dp"></com.google.android.material.floatingactionbutton.FloatingActionButton>
 
     <com.mihir.drawingcanvas.drawingView
         android:id="@+id/drawing_view"
@@ -27,40 +16,90 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"></com.mihir.drawingcanvas.drawingView>
+        app:layout_constraintVertical_bias="0.0" />
 
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomAppBar"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/purple"
-            app:backgroundTint="@color/purple"
-            app:menu="@menu/bottom_menu"
-            android:layout_gravity="bottom"
-            app:fabAlignmentMode="end"
-            app:fabCradleMargin="20dp"
-            app:fabCradleRoundedCornerRadius="30dp"/>
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/pink"
-            android:contentDescription="More"
-            android:src="@drawable/outline_add_24"
-            app:layout_anchor="@id/bottomAppBar"/>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            android:layout_height="?attr/actionBarSize"
+            app:menu="@menu/top_menu"
+            app:navigationIcon="@drawable/baseline_home_black_24dp"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary" />
 
-    <com.github.dhaval2404.colorpicker.ColorPickerView
-        android:id="@+id/colorView"
+    </com.google.android.material.appbar.AppBarLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/expandButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/pink"
+        android:contentDescription="More"
+        android:src="@drawable/outline_add_24" />
+
+
+    <RelativeLayout
+        android:id="@+id/seekbars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:backgroundTint="@color/white"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/brushSizeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="0dp"
+            android:text="Brush Size: " />
+
+        <SeekBar
+            android:id="@+id/brushSizeSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/brushSizeLabel"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:progressTint="@color/black"
+            android:thumbTint="@color/black"
+            android:max="200" />
+
+        <TextView
+            android:id="@+id/brushOpacityLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="110dp"
+            android:text="Brush Opacity: " />
+
+        <SeekBar
+            android:id="@+id/brushOpacitySeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/brushSizeLabel"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="120dp"
+            android:layout_marginEnd="16dp"
+            android:progressTint="@color/black"
+            android:thumbTint="@color/black"
+            android:max="255" />
+
+        <Button
+            android:id="@+id/set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:layout_marginStart="160dp"
+            android:layout_marginTop="170dp"/>
+    </RelativeLayout>
+</RelativeLayout>
