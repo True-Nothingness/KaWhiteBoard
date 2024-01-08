@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".BoardActivity">
 
-    <com.mihir.drawingcanvas.drawingView
+    <com.whiteboard.kobo.model.drawingView
         android:id="@+id/drawing_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -50,9 +50,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="160dp"
-        android:visibility="gone"
-        android:backgroundTint="@color/white"
-        android:background="@color/white">
+        android:background="@drawable/border"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/brushSizeLabel"
@@ -60,7 +59,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="0dp"
-            android:text="Brush Size: " />
+            android:text="Brush Size: "
+            android:textColor="@color/kobocolour" />
 
         <SeekBar
             android:id="@+id/brushSizeSeekBar"
@@ -70,9 +70,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:progressTint="@color/black"
-            android:thumbTint="@color/black"
-            android:max="200" />
+            android:max="200"
+            android:progressTint="@color/kobocolour"
+            android:thumbTint="@color/kobocolour" />
 
         <TextView
             android:id="@+id/brushOpacityLabel"
@@ -80,7 +80,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="110dp"
-            android:text="Brush Opacity: " />
+            android:text="Brush Opacity: "
+            android:textColor="@color/kobocolour" />
 
         <SeekBar
             android:id="@+id/brushOpacitySeekBar"
@@ -90,16 +91,16 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="120dp"
             android:layout_marginEnd="16dp"
-            android:progressTint="@color/black"
-            android:thumbTint="@color/black"
-            android:max="255" />
+            android:max="255"
+            android:progressTint="@color/kobocolour"
+            android:thumbTint="@color/kobocolour" />
 
         <Button
             android:id="@+id/set"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OK"
             android:layout_marginStart="160dp"
-            android:layout_marginTop="170dp"/>
+            android:layout_marginTop="170dp"
+            android:text="OK" />
     </RelativeLayout>
 </RelativeLayout>

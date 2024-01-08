@@ -23,7 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.mihir.drawingcanvas.drawingView;
+import com.whiteboard.kobo.model.drawingView;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 

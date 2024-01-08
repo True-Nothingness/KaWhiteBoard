@@ -4,12 +4,15 @@ import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import io.socket.emitter.Emitter;
 import yuku.ambilwarna.AmbilWarnaDialog;
+import io.socket.client.IO;
+import io.socket.client.Socket;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.mihir.drawingcanvas.drawingView;
+import com.whiteboard.kobo.model.drawingView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,21 +23,15 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URISyntaxException;
 
 public class BoardActivity extends AppCompatActivity {
     BottomAppBar bottomAppBar;
@@ -48,16 +45,22 @@ public class BoardActivity extends AppCompatActivity {
     TextView opacityLabel;
     Button set;
     MaterialToolbar topBar;
+    private Socket socket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CanvasView canvasView;
-        canvasView = new CanvasView((Context) this);
         setContentView(R.layout.activity_board);
+        try {
+            socket = IO.socket("http://192.168.1.224:5000/");
+            socket.connect();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         Intent homeIntent = new Intent(this, HomeActivity.class);
         topBar = findViewById(R.id.topAppBar);
         drawing_view = findViewById(R.id.drawing_view);
+        drawing_view.setSocket(socket);
         expand = findViewById(R.id.expandButton);
         relativeLayout = findViewById(R.id.seekbars);
         brushSizeSeekbar = findViewById(R.id.brushSizeSeekBar);
@@ -65,6 +68,20 @@ public class BoardActivity extends AppCompatActivity {
         sizeLabel = findViewById(R.id.brushSizeLabel);
         opacityLabel = findViewById(R.id.brushOpacityLabel);
         set = findViewById(R.id.set);
+        socket.on("draw", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                if (args.length > 0 && args[0] instanceof JSONObject) {
+                    try {
+                    JSONObject drawingData = (JSONObject) args[0];
+                        drawing_view.updateDrawingView(drawingData);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+            });
+
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,72 +108,6 @@ public class BoardActivity extends AppCompatActivity {
             }
         });
 
-    }
-    public class CanvasView extends View {
-
-        private final Panning panning;
-        private final GridManager gridManager;
-        private Rect bounds;
-        private Point current = new Point(0, 0);
-        private List<Overlay> overlays;
-        public CanvasView(Context context) {
-            super(context);
-            bounds = new Rect();
-            panning = new Panning();
-            overlays = new ArrayList<>();
-            gridManager = new GridManager(this);
-            init();
-        }
-
-        public void with(String[][] labels, int columns, int rows) {
-            gridManager.with(labels, columns, rows);
-        }
-
-        private void init() {
-            ViewTreeObserver observer = getViewTreeObserver();
-            observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-
-                @Override
-                public void onGlobalLayout() {
-                    int width = getWidth();
-                    int height = getHeight();
-                    bounds.set(0, 0, width, height);
-                    gridManager.generate(bounds);
-                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-            });
-        }
-
-        @Override
-        protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
-            super.onSizeChanged(width, height, oldWidth, oldHeight);
-            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            new Canvas(bitmap);
-        }
-
-        @Override
-        protected void onDraw(Canvas canvas) {
-            super.onDraw(canvas);
-            bounds.offsetTo(-current.x, -current.y);
-            gridManager.generate(bounds);
-            canvas.translate(current.x, current.y);
-            for (Overlay overlay : overlays) {
-                if (overlay.intersects(bounds)) {
-                    overlay.onDraw(canvas);
-                }
-            }
-        }
-
-        @Override
-        public boolean onTouchEvent(MotionEvent event) {
-            current = panning.handle(event);
-            invalidate();
-            return true;
-        }
-
-        public void addChild(Overlay overlay) {
-            this.overlays.add(overlay);
-        }
     }
     public void showColorPickerDialog() {
         AmbilWarnaDialog colorPicker = new AmbilWarnaDialog(this, selectedColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
@@ -232,4 +183,5 @@ public class BoardActivity extends AppCompatActivity {
             }
         });
     }
+
 }

@@ -19,9 +19,6 @@
             android:name=".MyBottomSheetDialogFragment"
             android:exported="false" />
         <activity
-            android:name=".BottomSheetDialogFragment"
-            android:exported="false" />
-        <activity
             android:name=".ResetActivity"
             android:exported="true" />
         <activity
