@@ -28,6 +28,7 @@ import android.view.View;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -71,16 +72,35 @@ public class BoardActivity extends AppCompatActivity {
         socket.on("draw", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                if (args.length > 0 && args[0] instanceof JSONObject) {
-                    try {
-                    JSONObject drawingData = (JSONObject) args[0];
-                        drawing_view.updateDrawingView(drawingData);
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
+                try {
+                    if (args.length > 0 && args[0] instanceof JSONObject) {
+                        JSONObject drawData = (JSONObject) args[0];
+
+                        // Extract path details from the JSON object
+                        int color = drawData.getInt("color");
+                        int brushThickness = drawData.getInt("brushThickness");
+                        int alpha = drawData.getInt("alpha");
+
+                        // Extract starting point (moveTo) from the JSON object
+                        JSONObject moveTo = drawData.getJSONObject("moveTo");
+                        float moveX = (float) moveTo.getDouble("x");
+                        float moveY = (float) moveTo.getDouble("y");
+
+                        // Create a new path and move to the starting point
+                        drawingView.CustomPath path = new drawingView.CustomPath(color, brushThickness, alpha);
+                        path.moveTo(moveX, moveY);
+
+                        // Extract list of points (lineTo) from the JSON object
+                        JSONArray pointsArray = drawData.getJSONArray("points");
+
+                        drawing_view.updateDrawingView(path, moveX, moveY, pointsArray);
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
-            });
+        });
+
 
         expand.setOnClickListener(new View.OnClickListener() {
             @Override

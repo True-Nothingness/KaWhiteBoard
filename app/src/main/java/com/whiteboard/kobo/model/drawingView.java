@@ -147,8 +147,8 @@ public class drawingView extends View {
                 break;
             case MotionEvent.ACTION_UP:
                 mPaths.add(mDrawPath);
-                mDrawPath = new CustomPath(currentColor, mBrushSize, mAlpha);
                 emitDrawEvent(mDrawPath);
+                mDrawPath = new CustomPath(currentColor, mBrushSize, mAlpha);
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 isDragging = true;
@@ -227,7 +227,7 @@ public class drawingView extends View {
         return mPaths;
     }
 
-    public class CustomPath extends Path {
+    public static class CustomPath extends Path {
         public int color;
         public int brushThickness;
         public int alpha;
@@ -297,39 +297,16 @@ public class drawingView extends View {
             e.printStackTrace();
         }
     }
-    public void updateDrawingView(Object drawingData) throws JSONException {
-        if (drawingData instanceof JSONObject) {
-            JSONObject drawData = (JSONObject) drawingData;
-
-            // Extract path details from the JSON object
-            int color = drawData.getInt("color");
-            int brushThickness = drawData.getInt("brushThickness");
-            int alpha = drawData.getInt("alpha");
-
-            // Extract starting point (moveTo) from the JSON object
-            JSONObject moveTo = drawData.getJSONObject("moveTo");
-            float moveX = (float) moveTo.getDouble("x");
-            float moveY = (float) moveTo.getDouble("y");
-
-            // Create a new path and move to the starting point
-            CustomPath path = new CustomPath(color, brushThickness, alpha);
-            path.moveTo(moveX, moveY);
-
-            // Extract list of points (lineTo) from the JSON object
-            JSONArray pointsArray = drawData.getJSONArray("points");
-            for (int j = 0; j < pointsArray.length(); j++) {
-                JSONObject pointObject = pointsArray.getJSONObject(j);
-                float x = (float) pointObject.getDouble("x");
-                float y = (float) pointObject.getDouble("y");
-                path.lineTo(x, y);
-            }
-
-            // Add the path to the drawingView
-            mPaths.add(path);
-
-            // Invalidate the drawingView to trigger a redraw
-            postInvalidate();
+    public void updateDrawingView(CustomPath path, float moveX, float moveY, JSONArray pointsArray) throws JSONException {
+        path.moveTo(moveX, moveY);
+        for (int j = 0; j < pointsArray.length(); j++) {
+            JSONObject pointObject = pointsArray.getJSONObject(j);
+            float x = (float) pointObject.getDouble("x");
+            float y = (float) pointObject.getDouble("y");
+            path.lineTo(x, y);
         }
+        mPaths.add(path);
+        invalidate();
     }
     public void exportAsPng(String filePath) {
         // Save the Bitmap (mCanvasBitmap) as a PNG file
