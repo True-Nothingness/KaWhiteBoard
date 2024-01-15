@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.whiteboard.kobo.model.Board;
+import com.whiteboard.kobo.model.BoardJSON;
 import com.whiteboard.kobo.model.Forgor;
 import com.whiteboard.kobo.model.Login;
 import com.whiteboard.kobo.model.LoginResponse;
@@ -13,6 +15,7 @@ import com.whiteboard.kobo.model.User;
 import com.whiteboard.kobo.model.UserData;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -81,4 +84,11 @@ public interface apiService {
     @POST("password-reset/link")
     @Headers("Content-Type: application/json")
     Call<PwdReset> resetPassword(@Body PwdReset pwdreset);
+    @POST("board/create-whiteboard")
+    @Headers("Content-Type: application/json")
+    Call<BoardJSON> createBoard(@Body BoardJSON boardjson);
+    @GET("boards/created-by")
+    Call<List<Board>> getOwnedBoard(@Query("userId") String id);
+    @GET("boards/member-of")
+    Call<List<Board>> getJoinedBoard(@Query("userId") String id);
 }

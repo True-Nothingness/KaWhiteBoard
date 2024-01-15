@@ -25,8 +25,12 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         String authToken = preferences.getString("authToken", null);
         String userEmail = preferences.getString("userEmail", null);
+        String userName = preferences.getString("userName", null);
+        String userId = preferences.getString("userId", null);
         UserData.getInstance().setToken(authToken);
         UserData.getInstance().setEmail(userEmail);
+        UserData.getInstance().setUsername(userName);
+        UserData.getInstance().setId(userId);
         if(authToken!=null){
             verify();
             }

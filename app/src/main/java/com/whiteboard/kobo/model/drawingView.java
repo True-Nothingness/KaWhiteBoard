@@ -206,11 +206,27 @@ public class drawingView extends View {
         if (mPaths.size() > 0) {
             mUndoPath.add(mPaths.get(mPaths.size() - 1));
             mPaths.remove(mPaths.size() - 1);
+            emitUndoEvent();
+            invalidate();
+        }
+    }
+    public void undo2() {
+        if (mPaths.size() > 0) {
+            mUndoPath.add(mPaths.get(mPaths.size() - 1));
+            mPaths.remove(mPaths.size() - 1);
             invalidate();
         }
     }
 
     public void redo() {
+        if (mUndoPath.size() > 0) {
+            mPaths.add(mUndoPath.get(mUndoPath.size() - 1));
+            mUndoPath.remove(mUndoPath.size() - 1);
+            emitRedoEvent();
+            invalidate();
+        }
+    }
+    public void redo2() {
         if (mUndoPath.size() > 0) {
             mPaths.add(mUndoPath.get(mUndoPath.size() - 1));
             mUndoPath.remove(mUndoPath.size() - 1);
@@ -296,6 +312,12 @@ public class drawingView extends View {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    public void emitUndoEvent() {
+        socket.emit("undo");
+    }
+    public void emitRedoEvent() {
+        socket.emit("redo");
     }
     public void updateDrawingView(CustomPath path, float moveX, float moveY, JSONArray pointsArray) throws JSONException {
         path.moveTo(moveX, moveY);

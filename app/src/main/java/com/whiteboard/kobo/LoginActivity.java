@@ -31,12 +31,10 @@ public class LoginActivity extends AppCompatActivity {
     TextView textView2;
     String emailInput;
     String pwdInput;
-    boolean success = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Intent loginIntent = new Intent(this, BoardActivity.class);
         Intent loginIntent2 = new Intent(this, SignupActivity.class);
         Intent loginIntent3 = new Intent(this, ForgorActivity.class);
         loginbtn = findViewById(R.id.loginbtn);
@@ -50,18 +48,6 @@ public class LoginActivity extends AppCompatActivity {
                     emailInput = email2.getText().toString();
                     pwdInput = password2.getText().toString();
                     logIn(emailInput, pwdInput);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            // The code inside this run() method will be executed after a 3-second delay
-                            if (success) {
-                                startActivity(loginIntent);
-                                finish();
-                            }
-                            // Handle other UI updates or show error messages if needed
-                        }
-                    }, 1500);
-                    success=false;
                 }
         );
         signupbtn.setOnClickListener(
@@ -98,13 +84,13 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("userName", userName);
                     editor.putString("userId", userId);
                     editor.apply();
-
                     // Your success handling logic
-                    success = true;
                     Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                    Intent loginIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                    startActivity(loginIntent);
+                    finish();
                 } else {
                     // Handle unsuccessful response
-                    success = false;
                     Toast.makeText(LoginActivity.this, "Login Unsuccessfully, please check your info", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -112,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 // Handle network errors or request failure
-                success = false;
                 Toast.makeText(LoginActivity.this, "Login Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

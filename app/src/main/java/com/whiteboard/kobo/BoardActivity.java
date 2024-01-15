@@ -12,6 +12,7 @@ import io.socket.client.Socket;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.whiteboard.kobo.model.CurrentBoard;
 import com.whiteboard.kobo.model.drawingView;
 
 import android.content.Context;
@@ -69,6 +70,7 @@ public class BoardActivity extends AppCompatActivity {
         sizeLabel = findViewById(R.id.brushSizeLabel);
         opacityLabel = findViewById(R.id.brushOpacityLabel);
         set = findViewById(R.id.set);
+        socket.emit("joinWhiteboard", CurrentBoard.getInstance().getId());
         socket.on("draw", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -100,8 +102,28 @@ public class BoardActivity extends AppCompatActivity {
                 }
             }
         });
-
-
+        socket.on("undo", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        drawing_view.undo2();
+                    }
+                });
+            }
+        });
+        socket.on("redo", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        drawing_view.redo2();
+                    }
+                });
+            }
+        });
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

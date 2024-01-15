@@ -29,12 +29,10 @@ EditText    password2;
 String pwdInput;
 String nameInput;
 String emailInput;
-boolean success = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        Intent signupIntent = new Intent(this, HomeActivity.class);
         signupbtn = findViewById(R.id.signupbtn);
         email2 = findViewById(R.id.email2);
         name2 = findViewById(R.id.name2);
@@ -46,17 +44,6 @@ boolean success = false;
                     nameInput = name2.getText().toString();
                     pwdInput = password2.getText().toString();
                     registerUser(nameInput,emailInput,pwdInput);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            // The code inside this run() method will be executed after a 3-second delay
-                            if (success) {
-                                startActivity(signupIntent);
-                            }
-                            // Handle other UI updates or show error messages if needed
-                        }
-                    }, 2000);
-                    finish();
                 }
         );
     }
@@ -88,11 +75,12 @@ boolean success = false;
                     editor.putString("userId", userId);
                     editor.apply();
                     // Your success handling logic
-                    success = true;
                     Toast.makeText(SignupActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                    Intent signupIntent = new Intent(SignupActivity.this, HomeActivity.class);
+                    startActivity(signupIntent);
+                    finish();
                 } else {
                     // Handle unsuccessful response
-                    success = false;
                     Toast.makeText(SignupActivity.this, "Login Unsuccessfully, please check your info", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -100,7 +88,6 @@ boolean success = false;
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                 // Handle network errors or request failure
-                success = false;
                 Toast.makeText(SignupActivity.this, "Login Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
