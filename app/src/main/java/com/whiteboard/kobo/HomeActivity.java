@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.whiteboard.kobo.FilesFragment;
 import com.whiteboard.kobo.SharedFragment;
@@ -44,7 +45,10 @@ import retrofit2.Response;
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private DrawerLayout drawerLayout;
     private TextView navHeaderTextView;
-    FloatingActionButton addBoard;
+    FloatingActionButton addBoard, joinBoard;
+    ExtendedFloatingActionButton addFab;
+    TextView addText, joinText;
+    Boolean isAllFabsVisible;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +56,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
+        addFab = findViewById(R.id.add_fab);
+        joinBoard = findViewById(R.id.join_board_fab);
         addBoard = findViewById(R.id.addBoard);
+        joinText = findViewById(R.id.join_board_action_text);
+        addText = findViewById(R.id.add_board_action_text);
+
+        joinBoard.setVisibility(View.GONE);
+        joinText.setVisibility(View.GONE);
+        addBoard.setVisibility(View.GONE);
+        addText.setVisibility(View.GONE);
+        isAllFabsVisible = false;
+        addFab.shrink();
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav,R.string.close_nav);
@@ -66,10 +82,36 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         navHeaderTextView = headerView.findViewById(R.id.nametag);
         navHeaderTextView.setText(preferences.getString("userName", null));
+        addFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isAllFabsVisible){
+                    joinBoard.show();
+                    addBoard.show();
+                    joinText.setVisibility(View.VISIBLE);
+                    addText.setVisibility(View.VISIBLE);
+                    addFab.extend();
+                    isAllFabsVisible = true;
+                }else{
+                    joinBoard.hide();
+                    addBoard.hide();
+                    joinText.setVisibility(View.GONE);
+                    addText.setVisibility(View.GONE);
+                    addFab.shrink();
+                    isAllFabsVisible = false;
+                }
+            }
+        });
         addBoard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAlertDialog();
+                showAlertDialog1();
+            }
+        });
+        joinBoard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAlertDialog2();
             }
         });
     }
@@ -99,7 +141,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-    private void showAlertDialog() {
+    private void showAlertDialog1() {
         // Create an EditText widget programmatically
         final EditText editText = new EditText(this);
 
@@ -113,6 +155,34 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         // Handle OK button click
                         String enteredText = editText.getText().toString();
                         createBoard(enteredText);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Handle Cancel button click
+                        dialog.cancel();
+                    }
+                });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+    private void showAlertDialog2() {
+        // Create an EditText widget programmatically
+        final EditText editText = new EditText(this);
+
+        // Create AlertDialog.Builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Enter board code to join:")
+                .setView(editText)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Handle OK button click
+                        String enteredText = editText.getText().toString();
+                        //add joinboard function
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

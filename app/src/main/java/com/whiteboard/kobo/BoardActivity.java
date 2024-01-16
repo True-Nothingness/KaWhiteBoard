@@ -3,6 +3,8 @@ package com.whiteboard.kobo;
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import io.socket.emitter.Emitter;
 import yuku.ambilwarna.AmbilWarnaDialog;
@@ -18,6 +20,7 @@ import com.whiteboard.kobo.model.drawingView;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -71,6 +74,13 @@ public class BoardActivity extends AppCompatActivity {
         opacityLabel = findViewById(R.id.brushOpacityLabel);
         set = findViewById(R.id.set);
         socket.emit("joinWhiteboard", CurrentBoard.getInstance().getId());
+        Log.d("boardId",":"+CurrentBoard.getInstance().getId());
+        socket.on("boardData", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+
+            }
+        });
         socket.on("draw", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -135,6 +145,7 @@ public class BoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(homeIntent);
+                socket.disconnect();
             }
         });
         topBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -145,6 +156,10 @@ public class BoardActivity extends AppCompatActivity {
                 }
                 if(item.getItemId()==R.id.undo){
                     drawing_view.undo();
+                }
+                if(item.getItemId()==R.id.options){
+                    showAdditionalOptionsFragment();
+                    expand.hide();
                 }
                 return false;
             }
@@ -224,6 +239,20 @@ public class BoardActivity extends AppCompatActivity {
                 toggleSeekBar();
             }
         });
+    }
+    private void showAdditionalOptionsFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        // Replace with your fragment class
+        OptionsFragment optionsFragment = new OptionsFragment();
+
+        // Set custom enter animation
+        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right);
+
+        transaction.replace(R.id.fragmentContainer, optionsFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 }

@@ -79,17 +79,17 @@ public class SharedFragment extends Fragment {
             Board whiteboard = new Board(creator, id, name, timestamp, users, drawings, version);
             whiteboards.add(whiteboard);
         }
-// Log the parsed data
-        for (Board whiteboard : whiteboards) {
-            Log.d("ParsedWhiteboard", "ID: " + whiteboard.getId() + ", Name: " + whiteboard.getBoardName() + ", Timestamp: " + whiteboard.getTimestamp());
-            Log.d("ParsedWhiteboard", "Creator: ID=" + whiteboard.getCreator().getCreatorId() + ", Name=" + whiteboard.getCreator().getCreatorName());
-        }
             // Log users and drawings if needed
             return whiteboards;
         }
 
     private void updateRecyclerView(List<Board> mBoards) {
-        adapter.setWhiteboards(mBoards);
-        adapter.notifyDataSetChanged();
+        if (mBoards != null && !mBoards.isEmpty()) {
+            adapter.setWhiteboards(mBoards);
+            adapter.notifyDataSetChanged();
+        } else {
+            // Handle empty data case (e.g., show a message)
+            Toast.makeText(getActivity(), "No boards available", Toast.LENGTH_SHORT).show();
+        }
     }
 }

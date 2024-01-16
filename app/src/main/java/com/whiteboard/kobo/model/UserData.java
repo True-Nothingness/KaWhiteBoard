@@ -4,7 +4,7 @@ public class UserData {
     private static UserData instance;
     private String username;
     private String email;
-    private String id;
+    private String _id;
     private String token;
 
     private UserData() {
@@ -35,11 +35,11 @@ public class UserData {
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this._id = id;
     }
 
     public String getToken() {

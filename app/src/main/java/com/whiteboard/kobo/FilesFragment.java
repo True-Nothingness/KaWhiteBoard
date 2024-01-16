@@ -41,6 +41,7 @@ public class FilesFragment extends Fragment {
         adapter = new HomeAdapter(getContext(), new ArrayList<>());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        Log.d("userId",":"+UserData.getInstance().getId());
         getBoard();
         // Implement the logic to fetch and update the list of created whiteboards here
 
@@ -75,7 +76,7 @@ public class FilesFragment extends Fragment {
             List<UserResponse> users = rawWhiteboard.getUsers();
             List<Drawing> drawings = rawWhiteboard.getDrawings();
             int version = rawWhiteboard.getVersion();
-
+            Log.d("Board Data",":"+creator+id+users);
             Board whiteboard = new Board(creator, id, name, timestamp, users, drawings, version);
             whiteboards.add(whiteboard);
         }
@@ -86,9 +87,6 @@ public class FilesFragment extends Fragment {
         if (mBoards != null && !mBoards.isEmpty()) {
             adapter.setWhiteboards(mBoards);
             adapter.notifyDataSetChanged();
-            // Log data for debugging
-            for (Board board : mBoards) {
-                Log.d("BoardData",  ", Name: " + board.getBoardName() + ", Timestamp: " + board.getTimestamp());}
         } else {
             // Handle empty data case (e.g., show a message)
             Toast.makeText(getActivity(), "No boards available", Toast.LENGTH_SHORT).show();

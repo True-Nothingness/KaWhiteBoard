@@ -1,7 +1,7 @@
 package com.whiteboard.kobo.model;
 
 public class UserResponse {
-    private String id;
+    private String _id;
     private String name;
     private String role;
 
@@ -9,17 +9,17 @@ public class UserResponse {
     }
 
     public UserResponse(String id, String name, String role) {
-        this.id = id;
+        this._id = id;
         this.name = name;
         this.role = role;
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this._id = id;
     }
 
     public String getName() {

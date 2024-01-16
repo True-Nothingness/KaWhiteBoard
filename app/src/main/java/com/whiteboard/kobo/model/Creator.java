@@ -1,27 +1,27 @@
 package com.whiteboard.kobo.model;
 
 public class Creator {
-    private String creatorId;
-    private String creatorName;
+    private String _id;
+    private String name;
 
     public Creator(String id, String name) {
-        this.creatorId = id;
-        this.creatorName = name;
+        this._id = id;
+        this.name = name;
     }
 
     public String getCreatorId() {
-        return creatorId;
+        return _id;
     }
 
     public void setCreatorId(String creatorId) {
-        this.creatorId = creatorId;
+        this._id = creatorId;
     }
 
     public String getCreatorName() {
-        return creatorName;
+        return name;
     }
 
     public void setCreatorName(String creatorName) {
-        this.creatorName = creatorName;
+        this.name = creatorName;
     }
 }

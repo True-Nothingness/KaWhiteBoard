@@ -34,17 +34,62 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/add_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/kobocolour"
+            android:text="Actions"
+            app:icon="@drawable/outline_add_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/join_board_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/kobocolour"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/add_fab"
+            app:layout_constraintEnd_toEndOf="@+id/add_fab"
+            app:srcCompat="@drawable/group_add_fill0_wght400_grad0_opsz24" />
+
+        <TextView
+            android:id="@+id/join_board_action_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Join Board"
+            app:layout_constraintBottom_toBottomOf="@+id/join_board_fab"
+            app:layout_constraintEnd_toStartOf="@+id/join_board_fab"
+            app:layout_constraintTop_toTopOf="@+id/join_board_fab" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addBoard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:contentDescription="Create a board"
-            android:src="@drawable/outline_add_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:backgroundTint="@color/kobocolour"/>
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/kobocolour"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/join_board_fab"
+            app:layout_constraintEnd_toEndOf="@+id/join_board_fab"
+            app:layout_constraintStart_toStartOf="@+id/join_board_fab"
+            app:srcCompat="@drawable/post_add_fill0_wght400_grad0_opsz24" />
+
+
+        <TextView
+            android:id="@+id/add_board_action_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Create Board"
+            app:layout_constraintBottom_toBottomOf="@+id/addBoard"
+            app:layout_constraintEnd_toStartOf="@+id/addBoard"
+            app:layout_constraintTop_toTopOf="@+id/addBoard" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -56,5 +101,5 @@
         app:menu="@menu/nav_menu"
         app:itemIconTint="@color/kobocolour"
         app:itemTextColor="@color/kobocolour"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 </androidx.drawerlayout.widget.DrawerLayout>

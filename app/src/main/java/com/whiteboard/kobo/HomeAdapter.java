@@ -2,6 +2,7 @@ package com.whiteboard.kobo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WhiteboardView
                 CurrentBoard.getInstance().setUsers(users);
                 CurrentBoard.getInstance().setDrawings(drawings);
                 CurrentBoard.getInstance().setVersion(version);
+                Log.d("Current",":"+boardId+" "+boardName+" "+creator+" "+users);
                 mContext.startActivity(new Intent(mContext, BoardActivity.class));
             }
         });
