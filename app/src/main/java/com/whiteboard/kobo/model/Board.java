@@ -9,12 +9,12 @@ public class Board {
     private String name;
     private Date timestamp;
     private List<UserResponse> users;
-    private List<Drawing> drawings;
+    private List<String> drawings;
     private int __v;
     public Board() {
     }
 
-    public Board(Creator creator, String id, String boardName, Date timestamp, List<UserResponse> users, List<Drawing> drawings, int version) {
+    public Board(Creator creator, String id, String boardName, Date timestamp, List<UserResponse> users, List<String> drawings, int version) {
         this.creator = creator;
         this._id = id;
         this.name = boardName;
@@ -64,11 +64,11 @@ public class Board {
         this.users = users;
     }
 
-    public List<Drawing> getDrawings() {
+    public List<String> getDrawings() {
         return drawings;
     }
 
-    public void setDrawings(List<Drawing> drawings) {
+    public void setDrawings(List<String> drawings) {
         this.drawings = drawings;
     }
 

@@ -63,7 +63,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.WhiteboardView
                 Date timestamp = currentWhiteboard.getTimestamp();
                 Creator creator = currentWhiteboard.getCreator();
                 List<UserResponse> users = currentWhiteboard.getUsers();
-                List<Drawing> drawings = currentWhiteboard.getDrawings();
+                List<String> drawings = currentWhiteboard.getDrawings();
                 int version = currentWhiteboard.getVersion();
                 CurrentBoard.getInstance().setId(boardId);
                 CurrentBoard.getInstance().setBoardName(boardName);

@@ -2,10 +2,12 @@ package com.whiteboard.kobo.api;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.whiteboard.kobo.model.Board;
 import com.whiteboard.kobo.model.BoardJSON;
+import com.whiteboard.kobo.model.Deletion;
 import com.whiteboard.kobo.model.Forgor;
 import com.whiteboard.kobo.model.Login;
 import com.whiteboard.kobo.model.LoginResponse;
@@ -91,4 +93,7 @@ public interface apiService {
     Call<List<Board>> getOwnedBoard(@Query("userId") String id);
     @GET("boards/member-of")
     Call<List<Board>> getJoinedBoard(@Query("userId") String id);
+    @POST("board/delete-whiteboard")
+    @Headers("Content-Type: application/json")
+    Call<Void> deleteBoard(@Body Deletion deletion);
 }

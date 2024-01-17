@@ -55,6 +55,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.home_activity);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String authToken = preferences.getString("authToken", null);
+        String userEmail = preferences.getString("userEmail", null);
+        String userName = preferences.getString("userName", null);
+        String userId = preferences.getString("userId", null);
+        UserData.getInstance().setToken(authToken);
+        UserData.getInstance().setEmail(userEmail);
+        UserData.getInstance().setUsername(userName);
+        UserData.getInstance().setId(userId);
         drawerLayout = findViewById(R.id.drawer_layout);
         addFab = findViewById(R.id.add_fab);
         joinBoard = findViewById(R.id.join_board_fab);
@@ -79,7 +88,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.my_files);
         }
         View headerView = navigationView.getHeaderView(0);
-        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         navHeaderTextView = headerView.findViewById(R.id.nametag);
         navHeaderTextView.setText(preferences.getString("userName", null));
         addFab.setOnClickListener(new View.OnClickListener() {

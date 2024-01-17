@@ -159,7 +159,6 @@ public class BoardActivity extends AppCompatActivity {
                 }
                 if(item.getItemId()==R.id.options){
                     showAdditionalOptionsFragment();
-                    expand.hide();
                 }
                 return false;
             }

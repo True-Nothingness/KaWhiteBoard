@@ -10,7 +10,7 @@ public class CurrentBoard {
     private String name;
     private Date timestamp;
     private List<UserResponse> users;
-    private List<Drawing> drawings;
+    private List<String> drawings;
     private int __v;
     private CurrentBoard() {
     }
@@ -62,11 +62,11 @@ public class CurrentBoard {
         this.users = users;
     }
 
-    public List<Drawing> getDrawings() {
+    public List<String> getDrawings() {
         return drawings;
     }
 
-    public void setDrawings(List<Drawing> drawings) {
+    public void setDrawings(List<String> drawings) {
         this.drawings = drawings;
     }
 

@@ -73,7 +73,7 @@ public class SharedFragment extends Fragment {
             String name = rawWhiteboard.getBoardName();
             Date timestamp = rawWhiteboard.getTimestamp();
             List<UserResponse> users = rawWhiteboard.getUsers();
-            List<Drawing> drawings = rawWhiteboard.getDrawings();
+            List<String> drawings = rawWhiteboard.getDrawings();
             int version = rawWhiteboard.getVersion();
 
             Board whiteboard = new Board(creator, id, name, timestamp, users, drawings, version);

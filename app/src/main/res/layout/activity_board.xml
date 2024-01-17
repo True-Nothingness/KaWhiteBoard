@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".BoardActivity">
 
+    <FrameLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="10dp" />
     <com.whiteboard.kobo.model.drawingView
         android:id="@+id/drawing_view"
         android:layout_width="match_parent"
@@ -43,7 +48,6 @@
         android:backgroundTint="@color/pink"
         android:contentDescription="More"
         android:src="@drawable/outline_add_24" />
-
 
     <RelativeLayout
         android:id="@+id/seekbars"
@@ -103,8 +107,4 @@
             android:layout_marginTop="170dp"
             android:text="OK" />
     </RelativeLayout>
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 </RelativeLayout>
