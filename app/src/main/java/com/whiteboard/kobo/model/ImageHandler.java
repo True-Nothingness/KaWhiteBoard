@@ -46,7 +46,15 @@ public class ImageHandler extends androidx.appcompat.widget.AppCompatImageView {
     private void init() {
         setScaleType(ScaleType.MATRIX);
     }
-
+    public void setImageUri(Uri uri) {
+        try {
+            InputStream inputStream = getContext().getContentResolver().openInputStream(uri);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            setImageBitmap(bitmap);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction() & MotionEvent.ACTION_MASK) {

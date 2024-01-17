@@ -66,7 +66,7 @@ public class BoardActivity extends AppCompatActivity {
                     result -> {
                         if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                             Uri selectedImageUri = result.getData().getData();
-                            touchImageView.setImageURI(selectedImageUri);
+                            touchImageView.setImageUri(selectedImageUri);
                         }
                     });
     @Override
