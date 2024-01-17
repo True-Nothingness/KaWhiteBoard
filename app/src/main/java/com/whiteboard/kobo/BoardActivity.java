@@ -193,6 +193,14 @@ public class BoardActivity extends AppCompatActivity {
         });
 
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (socket != null && socket.connected()) {
+            socket.disconnect();
+        }
+    }
+
     public void showColorPickerDialog() {
         AmbilWarnaDialog colorPicker = new AmbilWarnaDialog(this, selectedColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
