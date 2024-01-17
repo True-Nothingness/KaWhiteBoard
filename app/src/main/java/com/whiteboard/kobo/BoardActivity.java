@@ -21,6 +21,7 @@ import com.whiteboard.kobo.model.ImageHandler;
 import com.whiteboard.kobo.model.TextHandler;
 import com.whiteboard.kobo.model.drawingView;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -60,10 +61,20 @@ public class BoardActivity extends AppCompatActivity {
     Button set;
     MaterialToolbar topBar;
     private Socket socket;
-    private ActivityResultLauncher<Intent> imagePickerLauncher;
     private static final int PICK_IMAGE_REQUEST = 1;
     private ImageHandler touchImageView;
     private TextHandler movableTextBoxView;
+    private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    if (data != null && data.getData() != null) {
+                        Uri selectedImageUri = data.getData();
+                        touchImageView.setImageUri(selectedImageUri);
+                    }
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,14 +100,6 @@ public class BoardActivity extends AppCompatActivity {
         opacityLabel = findViewById(R.id.brushOpacityLabel);
         touchImageView = findViewById(R.id.touchImageView);
         movableTextBoxView = findViewById(R.id.movableTextBoxView);
-        imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        Uri imageUri = result.getData().getData();
-                        // Load the image into your canvas
-                        loadImageToCanvas(imageUri);
-                    }
-                });
         set = findViewById(R.id.set);
         socket.emit("joinWhiteboard", CurrentBoard.getInstance().getId());
         Log.d("boardId",":"+CurrentBoard.getInstance().getId());
@@ -281,23 +284,6 @@ public class BoardActivity extends AppCompatActivity {
     public void openImagePicker() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         imagePickerLauncher.launch(intent);
-    }
-    private void loadImageToCanvas(Uri imageUri) {
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-            // Draw the bitmap on your canvas
-            drawing_view.drawBitmap(bitmap, 1, 1, null);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri selectedImageUri = data.getData();
-            touchImageView.setImageUri(selectedImageUri);
-        }
     }
     public void addNewTextBox() {
         TextHandler newTextBox = new TextHandler(this);
