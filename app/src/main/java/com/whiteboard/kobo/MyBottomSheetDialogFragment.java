@@ -60,7 +60,7 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
             itemButton1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Handle click for item 1
+                    boardActivity.addNewTextBox();
                     dismiss(); // Close the bottom sheet after the action
                 }
             });
@@ -95,7 +95,7 @@ public class MyBottomSheetDialogFragment extends BottomSheetDialogFragment {
             itemButton6.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Handle click for item 1
+                    boardActivity.openImagePicker();
                     dismiss(); // Close the bottom sheet after the action
                 }
             });
