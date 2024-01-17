@@ -1,5 +1,22 @@
 package com.whiteboard.kobo;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.ColorInt;
@@ -8,45 +25,25 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import io.socket.emitter.Emitter;
-import yuku.ambilwarna.AmbilWarnaDialog;
-import io.socket.client.IO;
-import io.socket.client.Socket;
-
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.whiteboard.kobo.model.CurrentBoard;
 import com.whiteboard.kobo.model.ImageHandler;
 import com.whiteboard.kobo.model.TextHandler;
 import com.whiteboard.kobo.model.drawingView;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.view.View;
-
-import com.google.android.material.bottomappbar.BottomAppBar;
-
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
+
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class BoardActivity extends AppCompatActivity {
     BottomAppBar bottomAppBar;
@@ -64,18 +61,14 @@ public class BoardActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private ImageHandler touchImageView;
     private TextHandler movableTextBoxView;
-    private final ActivityResultLauncher<Intent> imagePickerLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK) {
-                    Intent data = result.getData();
-                    if (data != null && data.getData() != null) {
-                        Uri selectedImageUri = data.getData();
-                        touchImageView.setImageUri(selectedImageUri);
-                    }
-                }
-            });
-
+    private final ActivityResultLauncher<Intent> imagePickerLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                    result -> {
+                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                            Uri selectedImageUri = result.getData().getData();
+                            touchImageView.setImageURI(selectedImageUri);
+                        }
+                    });
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -289,8 +282,9 @@ public class BoardActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
         transaction.commit();
     }
-    public void openImagePicker() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+    void openImagePicker() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
         imagePickerLauncher.launch(intent);
     }
     public void addNewTextBox() {
