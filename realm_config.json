@@ -1,0 +1,8 @@
+{
+    "app_id": "kobo-moqws",
+    "config_version": 20210101,
+    "name": "KoBo",
+    "location": "IN-MB",
+    "provider_region": "gcp-asia-south1",
+    "deployment_model": "LOCAL"
+}

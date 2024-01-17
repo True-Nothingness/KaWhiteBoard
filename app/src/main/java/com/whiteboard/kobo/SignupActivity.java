@@ -3,14 +3,19 @@ package com.whiteboard.kobo;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.whiteboard.kobo.api.apiService;
 import com.whiteboard.kobo.model.Login;
+import com.whiteboard.kobo.model.LoginResponse;
 import com.whiteboard.kobo.model.Register;
+import com.whiteboard.kobo.model.User;
+import com.whiteboard.kobo.model.UserData;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,12 +29,10 @@ EditText    password2;
 String pwdInput;
 String nameInput;
 String emailInput;
-boolean success = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        Intent signupIntent = new Intent(this, HomeActivity.class);
         signupbtn = findViewById(R.id.signupbtn);
         email2 = findViewById(R.id.email2);
         name2 = findViewById(R.id.name2);
@@ -41,7 +44,6 @@ boolean success = false;
                     nameInput = name2.getText().toString();
                     pwdInput = password2.getText().toString();
                     registerUser(nameInput,emailInput,pwdInput);
-                    startActivity(signupIntent);
                 }
         );
     }
@@ -49,24 +51,47 @@ boolean success = false;
         Login login = new Login();
         login.setEmail(email);
         login.setPassword(password);
-        apiService.apiService.logIn(login).enqueue(new Callback<Login>() {
+        SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        apiService.apiService.logIn(login).enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<Login> call, Response<Login> response) {
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
-                    success = true;
-                    Toast.makeText(SignupActivity.this,"Signup Successfully", Toast.LENGTH_SHORT).show();
-                }else {
-                    success = false;
-                    Toast.makeText(SignupActivity.this,"Signup Unsuccessfully, please check your info", Toast.LENGTH_SHORT).show();
+                    LoginResponse loginResponse = response.body();
+                    String authToken = loginResponse.getToken();
+                    User user = loginResponse.getUser();
+
+                    // Handle the extracted information as needed
+                    String userId = user.getId();
+                    String userName = user.getName();
+                    String userEmail = user.getEmail();
+                    UserData.getInstance().setUsername(userName);
+                    UserData.getInstance().setEmail(userEmail);
+                    UserData.getInstance().setId(userId);
+                    UserData.getInstance().setToken(authToken);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("authToken", authToken);
+                    editor.putString("userEmail", userEmail);
+                    editor.putString("userName", userName);
+                    editor.putString("userId", userId);
+                    editor.apply();
+                    // Your success handling logic
+                    Toast.makeText(SignupActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                    Intent signupIntent = new Intent(SignupActivity.this, HomeActivity.class);
+                    startActivity(signupIntent);
+                    finish();
+                } else {
+                    // Handle unsuccessful response
+                    Toast.makeText(SignupActivity.this, "Login Unsuccessfully, please check your info", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Login> call, Throwable t) {
-                success = false;
-                Toast.makeText(SignupActivity.this,"Login Error", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                // Handle network errors or request failure
+                Toast.makeText(SignupActivity.this, "Login Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
     private void registerUser(String userName, String userEmail, String userPwd){
         Register register = new Register();

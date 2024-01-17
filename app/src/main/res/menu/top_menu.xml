@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/redo"
+        android:icon="@drawable/redo_fill0_wght400_grad0_opsz24"
+        android:title="Redo"
+        android:contentDescription="Redo"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/undo"
+        android:icon="@drawable/undo_fill0_wght400_grad0_opsz24"
+        android:title="Undo"
+        android:contentDescription="Undo"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/chat"
+        android:icon="@drawable/forum_fill0_wght400_grad0_opsz24"
+        android:title="Chat"
+        android:contentDescription="Chat"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/options"
+        android:icon="@drawable/tune_fill0_wght400_grad0_opsz24"
+        android:title="Options"
+        android:contentDescription="Options"
+        app:showAsAction="always" />
+
+</menu>
