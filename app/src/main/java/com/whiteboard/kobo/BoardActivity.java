@@ -1,26 +1,26 @@
 package com.whiteboard.kobo;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import io.socket.emitter.Emitter;
 import yuku.ambilwarna.AmbilWarnaDialog;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.whiteboard.kobo.model.CurrentBoard;
+import com.whiteboard.kobo.model.TextHandler;
 import com.whiteboard.kobo.model.drawingView;
-
-import android.content.Context;
+import com.whiteboard.kobo.model.ImageHandler;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -31,11 +31,11 @@ import android.view.View;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class BoardActivity extends AppCompatActivity {
@@ -51,6 +51,10 @@ public class BoardActivity extends AppCompatActivity {
     Button set;
     MaterialToolbar topBar;
     private Socket socket;
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private ImageHandler touchImageView;
+    private TextHandler movableTextBoxView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,15 +76,17 @@ public class BoardActivity extends AppCompatActivity {
         brushOpacitySeekbar = findViewById(R.id.brushOpacitySeekBar);
         sizeLabel = findViewById(R.id.brushSizeLabel);
         opacityLabel = findViewById(R.id.brushOpacityLabel);
+        touchImageView = findViewById(R.id.touchImageView);
+        movableTextBoxView = findViewById(R.id.movableTextBoxView);
+        imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri imageUri = result.getData().getData();
+                        // Load the image into your canvas
+                        loadImageToCanvas(imageUri);
+                    }
+                });
         set = findViewById(R.id.set);
-        socket.emit("joinWhiteboard", CurrentBoard.getInstance().getId());
-        Log.d("boardId",":"+CurrentBoard.getInstance().getId());
-        socket.on("boardData", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-
-            }
-        });
         socket.on("draw", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -112,28 +118,8 @@ public class BoardActivity extends AppCompatActivity {
                 }
             }
         });
-        socket.on("undo", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        drawing_view.undo2();
-                    }
-                });
-            }
-        });
-        socket.on("redo", new Emitter.Listener() {
-            @Override
-            public void call(Object... args) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        drawing_view.redo2();
-                    }
-                });
-            }
-        });
+
+
         expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -145,7 +131,6 @@ public class BoardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(homeIntent);
-                socket.disconnect();
             }
         });
         topBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -156,9 +141,6 @@ public class BoardActivity extends AppCompatActivity {
                 }
                 if(item.getItemId()==R.id.undo){
                     drawing_view.undo();
-                }
-                if(item.getItemId()==R.id.options){
-                    showAdditionalOptionsFragment();
                 }
                 return false;
             }
@@ -239,19 +221,36 @@ public class BoardActivity extends AppCompatActivity {
             }
         });
     }
-    private void showAdditionalOptionsFragment() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        // Replace with your fragment class
-        OptionsFragment optionsFragment = new OptionsFragment();
-
-        // Set custom enter animation
-        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right);
-
-        transaction.replace(R.id.fragmentContainer, optionsFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+    public void openImagePicker() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        imagePickerLauncher.launch(intent);
     }
+    private void loadImageToCanvas(Uri imageUri) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            // Draw the bitmap on your canvas
+            drawing_view.drawBitmap(bitmap, 1, 1, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri selectedImageUri = data.getData();
+            touchImageView.setImageUri(selectedImageUri);
+        }
+    }
+    public void addNewTextBox() {
+        TextHandler newTextBox = new TextHandler(this);
+        // Customize the position and other attributes as needed
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        layoutParams.addRule(RelativeLayout.BELOW, R.id.itemButton1); // Adjust to your layout structure
+        newTextBox.setLayoutParams(layoutParams);
+        relativeLayout.addView(newTextBox);
+    }
 }
