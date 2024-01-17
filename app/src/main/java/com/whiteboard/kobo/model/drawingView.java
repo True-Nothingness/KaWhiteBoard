@@ -340,6 +340,9 @@ public class drawingView extends View {
             e.printStackTrace();
         }
     }
+    public void drawBitmap(Bitmap bitmap, int i, int i1, Object o){
+
+    }
 }
 
 
