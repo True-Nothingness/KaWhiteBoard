@@ -16,8 +16,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
+        app:layout_constraintVertical_bias="0.0"
+        />
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -52,7 +52,6 @@
         android:layout_marginTop="160dp"
         android:background="@drawable/border"
         android:visibility="gone">
-
         <TextView
             android:id="@+id/brushSizeLabel"
             android:layout_width="wrap_content"
@@ -61,7 +60,17 @@
             android:layout_marginTop="0dp"
             android:text="Brush Size: "
             android:textColor="@color/kobocolour" />
-
+        <com.whiteboard.kobo.model.TextHandler
+            android:id="@+id/movableTextBoxView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"/>
+        <com.whiteboard.kobo.model.ImageHandler
+            android:id="@+id/touchImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
         <SeekBar
             android:id="@+id/brushSizeSeekBar"
             android:layout_width="match_parent"
@@ -103,8 +112,4 @@
             android:layout_marginTop="170dp"
             android:text="OK" />
     </RelativeLayout>
-    <FrameLayout
-        android:id="@+id/fragmentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 </RelativeLayout>
