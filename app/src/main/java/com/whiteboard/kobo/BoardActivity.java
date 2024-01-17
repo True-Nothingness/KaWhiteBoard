@@ -24,6 +24,7 @@ import com.whiteboard.kobo.model.drawingView;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -51,7 +52,7 @@ public class BoardActivity extends AppCompatActivity {
     drawingView  drawing_view;
     private int selectedColor = 0;
     FloatingActionButton expand;
-    RelativeLayout relativeLayout;
+    RelativeLayout relativeLayout, mainBoard;
     SeekBar brushSizeSeekbar;
     SeekBar brushOpacitySeekbar;
     TextView sizeLabel;
@@ -81,6 +82,7 @@ public class BoardActivity extends AppCompatActivity {
         drawing_view.setSocket(socket);
         expand = findViewById(R.id.expandButton);
         relativeLayout = findViewById(R.id.seekbars);
+        mainBoard = findViewById(R.id.mainBoard);
         brushSizeSeekbar = findViewById(R.id.brushSizeSeekBar);
         brushOpacitySeekbar = findViewById(R.id.brushOpacitySeekBar);
         sizeLabel = findViewById(R.id.brushSizeLabel);
@@ -299,13 +301,14 @@ public class BoardActivity extends AppCompatActivity {
     }
     public void addNewTextBox() {
         TextHandler newTextBox = new TextHandler(this);
+        newTextBox.setBorderColor(Color.BLACK);
         // Customize the position and other attributes as needed
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        layoutParams.addRule(RelativeLayout.BELOW, R.id.itemButton1); // Adjust to your layout structure
+        layoutParams.addRule(RelativeLayout.CENTER_VERTICAL); // Adjust to your layout structure
         newTextBox.setLayoutParams(layoutParams);
-        relativeLayout.addView(newTextBox);
+        mainBoard.addView(newTextBox);
     }
 }

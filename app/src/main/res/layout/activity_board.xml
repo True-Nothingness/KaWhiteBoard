@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BoardActivity">
+    tools:context=".BoardActivity"
+    android:id="@+id/mainBoard">
 
     <FrameLayout
         android:id="@+id/fragmentContainer"
@@ -116,4 +117,5 @@
             android:layout_marginTop="170dp"
             android:text="OK" />
     </RelativeLayout>
+
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.whiteboard.kobo.model;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -33,6 +34,8 @@ public class TextHandler extends FrameLayout {
         editText.setGravity(Gravity.TOP | Gravity.START);
         editText.setBackground(null);
         editText.setPadding(0, 0, 0, 0);
+        editText.setText("Insert Text here");
+        editText.setTextColor(Color.BLACK);
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int before, int count) {
@@ -112,5 +115,6 @@ public class TextHandler extends FrameLayout {
     public EditText getEditText() {
         return editText;
     }
+
 }
 
