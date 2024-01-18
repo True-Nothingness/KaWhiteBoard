@@ -17,6 +17,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.ColorInt;
@@ -63,10 +65,16 @@ public class BoardActivity extends AppCompatActivity {
     private TextHandler movableTextBoxView;
     private final ActivityResultLauncher<Intent> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                    result -> {
-                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                            Uri selectedImageUri = result.getData().getData();
-                            touchImageView.setImageUri(selectedImageUri);
+                    new ActivityResultCallback<ActivityResult>() {
+                        @Override
+                        public void onActivityResult(ActivityResult result) {
+                            if (result.getResultCode() == RESULT_OK) {
+                                Intent data = result.getData();
+                                if (data != null) {
+                                    Uri selectedImageUri = data.getData();
+                                    touchImageView.setImageUri(selectedImageUri);
+                                }
+                            }
                         }
                     });
     @Override
