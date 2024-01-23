@@ -343,15 +343,14 @@ public class BoardActivity extends AppCompatActivity {
         imagePickerLauncher.launch(intent);
     }
     public void addNewTextBox() {
-        TextHandler newTextBox = new TextHandler(this);
-        newTextBox.setBorderColor(Color.BLACK);
+        movableTextBoxView.setBorderColor(Color.BLACK);
         // Customize the position and other attributes as needed
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
         layoutParams.addRule(RelativeLayout.CENTER_VERTICAL); // Adjust to your layout structure
-        newTextBox.setLayoutParams(layoutParams);
-        mainBoard.addView(newTextBox);
+        movableTextBoxView.setLayoutParams(layoutParams);
+        mainBoard.addView(movableTextBoxView);
     }
 }

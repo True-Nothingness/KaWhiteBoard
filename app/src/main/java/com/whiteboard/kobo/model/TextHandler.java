@@ -11,6 +11,8 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
+
 public class TextHandler extends FrameLayout {
     private EditText editText;
     private Paint borderPaint;
@@ -62,7 +64,6 @@ public class TextHandler extends FrameLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         // Draw a border around the text box
         canvas.drawRect(0, 0, getWidth(), getHeight(), borderPaint);
     }
@@ -86,8 +87,11 @@ public class TextHandler extends FrameLayout {
                     float dx = touchX - lastTouchX;
                     float dy = touchY - lastTouchY;
 
-                    // Move the textbox
-                    layout((int) (getLeft() + dx), (int) (getTop() + dy), (int) (getRight() + dx), (int) (getBottom() + dy));
+                    // Update the position of the TextHandler within its parent layout
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) getLayoutParams();
+                    layoutParams.leftMargin = (int) (getLeft() + dx);
+                    layoutParams.topMargin = (int) (getTop() + dy);
+                    setLayoutParams(layoutParams);
 
                     lastTouchX = touchX;
                     lastTouchY = touchY;
@@ -115,6 +119,5 @@ public class TextHandler extends FrameLayout {
     public EditText getEditText() {
         return editText;
     }
-
 }
 
