@@ -96,4 +96,7 @@ public interface apiService {
     @POST("board/delete-whiteboard")
     @Headers("Content-Type: application/json")
     Call<Void> deleteBoard(@Body Deletion deletion);
+    @POST("board/join-whiteboard")
+    @Headers("Content-Type: application/json")
+    Call<Void> joinBoard(@Body com.whiteboard.kobo.model.Request request);
 }

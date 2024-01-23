@@ -107,9 +107,39 @@ public class BoardActivity extends AppCompatActivity {
         socket.on("boardData", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
+                try {
+                    if (args.length > 0 && args[0] instanceof JSONArray) {
+                        JSONArray drawingsArray = (JSONArray) args[0];
 
+                        for (int i = 0; i < drawingsArray.length(); i++) {
+                            JSONObject drawData = drawingsArray.getJSONObject(i);
+
+                            // Extract path details from the JSON object
+                            int color = drawData.getInt("color");
+                            int brushThickness = drawData.getInt("brushThickness");
+                            int alpha = drawData.getInt("alpha");
+
+                            // Extract starting point (moveTo) from the JSON object
+                            JSONObject moveTo = drawData.getJSONObject("moveTo");
+                            float moveX = (float) moveTo.getDouble("x");
+                            float moveY = (float) moveTo.getDouble("y");
+
+                            // Create a new path and move to the starting point
+                            drawingView.CustomPath path = new drawingView.CustomPath(color, brushThickness, alpha);
+                            path.moveTo(moveX, moveY);
+
+                            // Extract list of points (lineTo) from the JSON object
+                            JSONArray pointsArray = drawData.getJSONArray("points");
+
+                            drawing_view.updateDrawingView(path, moveX, moveY, pointsArray);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
+
         socket.on("draw", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
@@ -188,6 +218,9 @@ public class BoardActivity extends AppCompatActivity {
                 }
                 if(item.getItemId()==R.id.options){
                     showAdditionalOptionsFragment();
+                }
+                if(item.getItemId()==R.id.chat){
+                    showChatFragment();
                 }
                 return false;
             }
@@ -287,6 +320,20 @@ public class BoardActivity extends AppCompatActivity {
         transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right);
 
         transaction.replace(R.id.fragmentContainer, optionsFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+    private void showChatFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        // Replace with your fragment class
+        ChatFragment chatFragment = new ChatFragment();
+
+        // Set custom enter animation
+        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right);
+
+        transaction.replace(R.id.fragmentContainer, chatFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }

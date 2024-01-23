@@ -42,11 +42,10 @@ public class OptionsFragment extends Fragment {
                 public void onClick(View v) {
                     Intent sendIntent = new Intent();
                     sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TITLE, "Share your board code.");
                     sendIntent.putExtra(Intent.EXTRA_TEXT, "Join the board with this code: "+CurrentBoard.getInstance().getId());
                     sendIntent.setType("text/plain");
 
-                    Intent shareIntent = Intent.createChooser(sendIntent, null);
+                    Intent shareIntent = Intent.createChooser(sendIntent, "Share your board code for others to join.");
                     startActivity(shareIntent);
 
                 }

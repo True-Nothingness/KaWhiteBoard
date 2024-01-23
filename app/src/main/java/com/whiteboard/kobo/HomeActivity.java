@@ -32,6 +32,7 @@ import com.whiteboard.kobo.R;
 import com.whiteboard.kobo.api.apiService;
 import com.whiteboard.kobo.model.Board;
 import com.whiteboard.kobo.model.BoardJSON;
+import com.whiteboard.kobo.model.Request;
 import com.whiteboard.kobo.model.UserData;
 
 import java.util.ArrayList;
@@ -190,7 +191,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     public void onClick(DialogInterface dialog, int which) {
                         // Handle OK button click
                         String enteredText = editText.getText().toString();
-                        //add joinboard function
+                        joinRequest(enteredText);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -228,6 +229,27 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onFailure(Call<BoardJSON> call, Throwable t) {
                 Toast.makeText(HomeActivity.this, "Creation Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void joinRequest(String boardId){
+        Request request = new Request();
+        request.setBoardId(boardId);
+        request.setUserId(UserData.getInstance().getId());
+        request.setUserName(UserData.getInstance().getUsername());
+        apiService.apiService.joinBoard(request).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()){
+                    Toast.makeText(HomeActivity.this, "Joined Successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(HomeActivity.this, "Board not joined!", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(HomeActivity.this, "Joining Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
