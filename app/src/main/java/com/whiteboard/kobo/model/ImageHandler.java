@@ -32,6 +32,9 @@ public class ImageHandler extends androidx.appcompat.widget.AppCompatImageView {
     private PointF start = new PointF();
     private PointF mid = new PointF();
     private float oldDist = 1f;
+    private float totalTranslationX = 0f;
+    private float totalTranslationY = 0f;
+
 
     public ImageHandler(Context context) {
         super(context);
@@ -87,7 +90,13 @@ public class ImageHandler extends androidx.appcompat.widget.AppCompatImageView {
             case MotionEvent.ACTION_MOVE:
                 if (mode == DRAG) {
                     matrix.set(savedMatrix);
-                    matrix.postTranslate(event.getX() - start.x, event.getY() - start.y);
+                    float dx = event.getX() - start.x;
+                    float dy = event.getY() - start.y;
+                    matrix.postTranslate(dx, dy);
+
+                    // Update total translation
+                    totalTranslationX += dx;
+                    totalTranslationY += dy;
                 } else if (mode == ZOOM) {
                     float newDist = spacing(event);
                     if (newDist > 10f) {
@@ -100,6 +109,11 @@ public class ImageHandler extends androidx.appcompat.widget.AppCompatImageView {
         }
 
         setImageMatrix(matrix);
+
+        // Move the entire custom view on the canvas
+        setTranslationX(totalTranslationX);
+        setTranslationY(totalTranslationY);
+
         invalidate();
         return true;
     }
