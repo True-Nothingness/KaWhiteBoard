@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +33,10 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.whiteboard.kobo.model.CurrentBoard;
 import com.whiteboard.kobo.model.ImageHandler;
+import com.whiteboard.kobo.model.SocketManager;
 import com.whiteboard.kobo.model.TextHandler;
+import com.whiteboard.kobo.model.UserData;
+import com.whiteboard.kobo.model.UserResponse;
 import com.whiteboard.kobo.model.drawingView;
 
 import org.json.JSONArray;
@@ -85,11 +89,16 @@ public class BoardActivity extends AppCompatActivity {
         try {
             socket = IO.socket("http://192.168.1.224:5000/");
             socket.connect();
+            SocketManager.setSocket(socket);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
         Intent homeIntent = new Intent(this, HomeActivity.class);
         topBar = findViewById(R.id.topAppBar);
+        Menu menu = topBar.getMenu();
+        MenuItem undoItem = menu.findItem(R.id.undo);
+        MenuItem redoItem = menu.findItem(R.id.redo);
+        MenuItem optionsItem = menu.findItem(R.id.options);
         drawing_view = findViewById(R.id.drawing_view);
         drawing_view.setSocket(socket);
         expand = findViewById(R.id.expandButton);
@@ -102,6 +111,27 @@ public class BoardActivity extends AppCompatActivity {
         touchImageView = findViewById(R.id.touchImageView);
         movableTextBoxView = findViewById(R.id.movableTextBoxView);
         set = findViewById(R.id.set);
+        // Find the current user in the list
+        UserResponse currentUser = null;
+        for (UserResponse user : CurrentBoard.getInstance().getUsers()) {
+            if (UserData.getInstance().getId().equals(user.getId())) {
+                currentUser = user;
+                break;
+            }
+        }
+        // Check the role of the current user
+        if (currentUser != null) {
+            String currentUserRole = currentUser.getRole();
+            drawing_view.setUserRole(currentUserRole);
+            if ("Viewer".equals(currentUserRole)) {
+                expand.hide();
+                undoItem.setVisible(false);
+                redoItem.setVisible(false);
+                optionsItem.setVisible(false);
+            } else if ("Editor".equals(currentUserRole)) {
+                optionsItem.setVisible(false);
+            }
+        }
         socket.emit("joinWhiteboard", CurrentBoard.getInstance().getId());
         Log.d("boardId",":"+CurrentBoard.getInstance().getId());
         socket.on("boardData", new Emitter.Listener() {

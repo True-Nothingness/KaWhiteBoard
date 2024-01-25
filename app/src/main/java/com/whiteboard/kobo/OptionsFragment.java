@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -53,7 +55,7 @@ public class OptionsFragment extends Fragment {
             itemContainer2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                showMemberListFragment();
                 }
             });
             itemContainer3.setOnClickListener(new View.OnClickListener() {
@@ -97,4 +99,18 @@ public class OptionsFragment extends Fragment {
             return view;
         }
 
+    private void showMemberListFragment() {
+        MemberFragment memberFragment = new MemberFragment();
+
+        // Use FragmentTransaction to add or replace fragments
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right);
+        transaction.add(R.id.FragmentContainer, memberFragment);
+
+        // Add the transaction to the back stack
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
+    }
     }

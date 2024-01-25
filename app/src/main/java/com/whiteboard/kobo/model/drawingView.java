@@ -53,6 +53,7 @@ public class drawingView extends View {
     private float previousTranslateY = 0f;
     private ScaleGestureDetector mScaleDetector;
     private Socket socket;
+    private String userRole;
 
 
     public drawingView(Context context, AttributeSet attrs) {
@@ -115,6 +116,10 @@ public class drawingView extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if(!isDragging){
+                    if ("Viewer".equals(userRole)) {
+                        // User has Viewer role, don't process touch events
+                        break;
+                    }
                 mLastTouchX = touchX;
                 mLastTouchY = touchY;
                 mDrawPath.color = currentColor;
@@ -141,11 +146,19 @@ public class drawingView extends View {
                     // Translate the canvas
                     canvas.translate(dx, dy);
                 } else {
+                    if ("Viewer".equals(userRole)) {
+                        // User has Viewer role, don't process touch events
+                        break;
+                    }
                     mDrawPath.lineTo(touchX, touchY);
                     mDrawPath.addPoint(touchX, touchY);
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                if ("Viewer".equals(userRole)) {
+                    // User has Viewer role, don't process touch events
+                    break;
+                }
                 mPaths.add(mDrawPath);
                 emitDrawEvent(mDrawPath);
                 mDrawPath = new CustomPath(currentColor, mBrushSize, mAlpha);
@@ -342,6 +355,9 @@ public class drawingView extends View {
     }
     public void drawBitmap(Bitmap bitmap, int i, int i1, Object o){
 
+    }
+    public void setUserRole(String role) {
+        this.userRole = role;
     }
 }
 

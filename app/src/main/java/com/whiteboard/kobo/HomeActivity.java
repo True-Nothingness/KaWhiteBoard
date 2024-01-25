@@ -114,12 +114,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         addBoard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                joinBoard.hide();
+                addBoard.hide();
+                joinText.setVisibility(View.GONE);
+                addText.setVisibility(View.GONE);
+                addFab.shrink();
+                isAllFabsVisible = false;
                 showAlertDialog1();
             }
         });
         joinBoard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                joinBoard.hide();
+                addBoard.hide();
+                joinText.setVisibility(View.GONE);
+                addText.setVisibility(View.GONE);
+                addFab.shrink();
+                isAllFabsVisible = false;
                 showAlertDialog2();
             }
         });

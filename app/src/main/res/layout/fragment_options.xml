@@ -7,7 +7,11 @@
     tools:context=".OptionsFragment"
     tools:ignore="HardcodedText"
     android:background="@color/dark">
-
+    <FrameLayout
+        android:id="@+id/FragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="15dp" />
     <TextView
         android:id="@+id/boardName"
         android:layout_width="match_parent"
@@ -130,5 +134,4 @@
                 android:textSize="18sp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </GridLayout>
-
 </FrameLayout>

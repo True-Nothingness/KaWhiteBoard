@@ -15,6 +15,7 @@ import com.whiteboard.kobo.model.PwdReset;
 import com.whiteboard.kobo.model.Register;
 import com.whiteboard.kobo.model.User;
 import com.whiteboard.kobo.model.UserData;
+import com.whiteboard.kobo.model.UserResponse;
 
 import java.io.IOException;
 import java.util.List;
@@ -99,4 +100,10 @@ public interface apiService {
     @POST("board/join-whiteboard")
     @Headers("Content-Type: application/json")
     Call<Void> joinBoard(@Body com.whiteboard.kobo.model.Request request);
+    @POST("board/remove-member")
+    @Headers("Content-Type: application/json")
+    Call<List<UserResponse>> removeMember(@Query("userId") String id, @Query("boardId") String boardId);
+    @POST("board/change-role")
+    @Headers("Content-Type: application/json")
+    Call<List<UserResponse>> changeRole(@Query("userId") String id, @Query("role") String role, @Query("boardId") String boardId);
 }
