@@ -1,17 +1,18 @@
 package com.whiteboard.kobo;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -32,14 +33,12 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.whiteboard.kobo.model.CurrentBoard;
 import com.whiteboard.kobo.model.ImageHandler;
-import com.whiteboard.kobo.model.TextHandler;
 import com.whiteboard.kobo.model.drawingView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
 import java.net.URISyntaxException;
 
 import io.socket.client.IO;
@@ -60,9 +59,8 @@ public class BoardActivity extends AppCompatActivity {
     Button set;
     MaterialToolbar topBar;
     private Socket socket;
-    private static final int PICK_IMAGE_REQUEST = 1;
     private ImageHandler touchImageView;
-    private TextHandler movableTextBoxView;
+    private int textBoxCounter = 0;
     private final ActivityResultLauncher<Intent> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                     new ActivityResultCallback<ActivityResult>() {
@@ -100,7 +98,6 @@ public class BoardActivity extends AppCompatActivity {
         sizeLabel = findViewById(R.id.brushSizeLabel);
         opacityLabel = findViewById(R.id.brushOpacityLabel);
         touchImageView = findViewById(R.id.touchImageView);
-        movableTextBoxView = findViewById(R.id.movableTextBoxView);
         set = findViewById(R.id.set);
         socket.emit("joinWhiteboard", CurrentBoard.getInstance().getId());
         Log.d("boardId",":"+CurrentBoard.getInstance().getId());
@@ -342,15 +339,48 @@ public class BoardActivity extends AppCompatActivity {
         intent.setType("image/*");
         imagePickerLauncher.launch(intent);
     }
-    public void addNewTextBox() {
-        movableTextBoxView.setBorderColor(Color.BLACK);
-        // Customize the position and other attributes as needed
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        layoutParams.addRule(RelativeLayout.CENTER_VERTICAL); // Adjust to your layout structure
-        movableTextBoxView.setLayoutParams(layoutParams);
-        mainBoard.addView(movableTextBoxView);
+    public void addTextbox(){
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        final EditText newTextBox = (EditText) inflater.inflate(R.layout.text_box, null);
+
+        // Set a unique identifier for each EditText
+        newTextBox.setId(View.generateViewId());
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.BELOW, R.id.itemButton1);
+
+        newTextBox.setLayoutParams(params);
+        mainBoard.addView(newTextBox);
+
+        // Make the new EditText movable
+        setMovable(newTextBox);
+    }
+
+    private void setMovable(final EditText editText) {
+        editText.setOnTouchListener(new View.OnTouchListener() {
+            private float x, y;
+
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        x = view.getX() - event.getRawX();
+                        y = view.getY() - event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        view.animate()
+                                .x(event.getRawX() + x)
+                                .y(event.getRawY() + y)
+                                .setDuration(0)
+                                .start();
+                        break;
+                    default:
+                        return false;
+                }
+                return true;
+            }
+        });
     }
 }

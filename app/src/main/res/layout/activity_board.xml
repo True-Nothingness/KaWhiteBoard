@@ -24,12 +24,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         />
-    <com.whiteboard.kobo.model.TextHandler
-        android:id="@+id/movableTextBoxView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"/>
 
     <com.whiteboard.kobo.model.ImageHandler
         android:id="@+id/touchImageView"
