@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.whiteboard.kobo.model.Board;
 import com.whiteboard.kobo.model.Message;
 
 import java.util.List;
@@ -111,12 +112,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             chatContainer.setText(message.getMessage());
             timestampDate.setText(dateFormat.format(message.getTimestamp()));  // Pass the date to formatDate method
             timestampHour.setText(hourFormat.format(message.getTimestamp()));  // Pass the date to formatHour method
-            senderName.setText(message.getSender());
+            senderName.setText(message.getSenderName());
         }
     }
     public void addMessage(Message message) {
         messages.add(message);
-        notifyDataSetChanged(); // Notify the adapter that the data set has changed
+        notifyItemInserted(getItemCount()-1); // Notify the adapter that the data set has changed
     }
     public void setMessages(List<Message> messages) {
         this.messages = messages;

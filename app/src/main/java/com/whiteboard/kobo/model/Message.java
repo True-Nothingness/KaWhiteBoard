@@ -3,35 +3,45 @@ package com.whiteboard.kobo.model;
 import java.util.Date;
 
 public class Message {
-    private String message;
-    private String sender;
+    private String content;
+    private String senderId;
+    private String senderName;
     Date timestamp;
     private boolean isMe;
 
     public Message() {
     }
 
-    public Message(String message, String sender, Date timestamp, boolean isMe) {
-        this.message = message;
-        this.sender = sender;
+    public Message(String message, String senderId, String senderName, Date timestamp, boolean isMe) {
+        this.content = message;
+        this.senderId = senderId;
+        this.senderName = senderName;
         this.timestamp = timestamp;
         this.isMe = isMe;
     }
 
     public String getMessage() {
-        return message;
+        return content;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.content = message;
     }
 
-    public String getSender() {
-        return sender;
+    public String getSenderId() {
+        return senderId;
     }
 
-    public void setSender(String sender) {
-        this.sender = sender;
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
     }
 
     public Date getTimestamp() {
@@ -43,7 +53,7 @@ public class Message {
     }
 
     public boolean isMe() {
-        return isMe;
+        return senderId.equals(UserData.getInstance().getId());
     }
 
     public void setMe(boolean me) {
