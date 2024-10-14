@@ -70,8 +70,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="20dp"
             android:text="Brush Size: "
+            android:textSize="16sp"
             android:textColor="@color/kobocolour" />
         <SeekBar
             android:id="@+id/brushSizeSeekBar"
@@ -90,17 +91,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="110dp"
+            android:layout_marginTop="100dp"
             android:text="Brush Opacity: "
+            android:textSize="16sp"
             android:textColor="@color/kobocolour" />
 
         <SeekBar
             android:id="@+id/brushOpacitySeekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/brushSizeLabel"
+            android:layout_below="@+id/brushOpacityLabel"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="120dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:max="255"
             android:progressTint="@color/kobocolour"
@@ -108,10 +110,12 @@
 
         <Button
             android:id="@+id/set"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="160dp"
-            android:layout_marginTop="170dp"
+            android:layout_marginStart="105dp"
+            android:layout_marginTop="160dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="20sp"
             android:text="OK" />
     </RelativeLayout>
 

@@ -1,12 +1,12 @@
 package com.whiteboard.kobo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,13 +24,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
-    Button loginbtn;
-    Button signupbtn;
-    EditText email2;
-    EditText password2;
+    Button loginbtn, signupbtn;
+    EditText email2, password2;
     TextView textView2;
-    String emailInput;
-    String pwdInput;
+    String emailInput, pwdInput;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +61,10 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         apiService.apiService.logIn(login).enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+            public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
                     LoginResponse loginResponse = response.body();
+                    if(loginResponse==null) return;
                     String authToken = loginResponse.getToken();
                     User user = loginResponse.getUser();
 
@@ -96,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
                 // Handle network errors or request failure
                 Toast.makeText(LoginActivity.this, "Login Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }

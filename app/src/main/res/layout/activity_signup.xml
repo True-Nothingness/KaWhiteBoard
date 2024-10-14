@@ -76,8 +76,9 @@
         android:layout_marginEnd="24dp"
         android:hint="Password"
         app:hintTextColor="@color/purple"
-        app:helperText="@string/limit"
+        app:helperText="@string/pwdReq"
         app:helperTextTextColor="@color/red"
+        app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -89,20 +90,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/purple"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/confirmPassword"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="550dp"
+        android:layout_marginEnd="24dp"
+        android:hint="Confirm Password"
+        app:hintTextColor="@color/purple"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:placeholderTextColor="@color/purple"
+        app:startIconDrawable="@android:drawable/ic_lock_lock">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/confirmPassword2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple"
+            android:inputType="textPassword"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signupbtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="550dp"
+        android:layout_marginTop="650dp"
         android:layout_marginEnd="24dp"
         android:fontFamily="@font/caesar"
         android:text="@string/signup"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

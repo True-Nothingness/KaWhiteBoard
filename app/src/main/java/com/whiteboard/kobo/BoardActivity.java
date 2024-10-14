@@ -82,7 +82,7 @@ public class BoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
         try {
-            socket = IO.socket("http://192.168.1.224:5000/");
+            socket = IO.socket("http://192.168.0.106:5000/");
             socket.connect();
             SocketManager.setSocket(socket);
         } catch (URISyntaxException e) {

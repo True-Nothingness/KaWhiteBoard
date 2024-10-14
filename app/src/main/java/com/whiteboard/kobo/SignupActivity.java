@@ -1,11 +1,11 @@
 package com.whiteboard.kobo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,18 +17,17 @@ import com.whiteboard.kobo.model.Register;
 import com.whiteboard.kobo.model.User;
 import com.whiteboard.kobo.model.UserData;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SignupActivity extends AppCompatActivity {
 Button      signupbtn;
-EditText    email2;
-EditText    name2;
-EditText    password2;
-String pwdInput;
-String nameInput;
-String emailInput;
+EditText    email2, name2, password2, confirmPassword2;
+String pwdInput, nameInput, emailInput, confirmPwd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,12 +36,28 @@ String emailInput;
         email2 = findViewById(R.id.email2);
         name2 = findViewById(R.id.name2);
         password2 = findViewById(R.id.password2);
+        confirmPassword2 = findViewById(R.id.confirmPassword2);
 
         signupbtn.setOnClickListener(
                 v -> {
                     emailInput = email2.getText().toString();
                     nameInput = name2.getText().toString();
                     pwdInput = password2.getText().toString();
+                    confirmPwd = confirmPassword2.getText().toString();
+                    nameInput = nameInput.trim();
+                    if (nameInput.length() < 6) {
+                        Toast.makeText(SignupActivity.this, "Username must be at least 6 characters long!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (!isValidPassword(pwdInput)) {
+                        Toast.makeText(SignupActivity.this, "Password must be at least 6 characters long and include at least one uppercase letter, one lowercase letter, and one digit.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    // Check if confirm password matches password
+                    if (!pwdInput.equals(confirmPwd)) {
+                        Toast.makeText(SignupActivity.this, "Password and confirm password do not match.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     registerUser(nameInput,emailInput,pwdInput);
                 }
         );
@@ -54,9 +69,10 @@ String emailInput;
         SharedPreferences preferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
         apiService.apiService.logIn(login).enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+            public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
                     LoginResponse loginResponse = response.body();
+                    if(loginResponse==null) return;
                     String authToken = loginResponse.getToken();
                     User user = loginResponse.getUser();
 
@@ -86,7 +102,7 @@ String emailInput;
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
                 // Handle network errors or request failure
                 Toast.makeText(SignupActivity.this, "Login Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -101,7 +117,7 @@ String emailInput;
 
         apiService.apiService.createUser(register).enqueue(new Callback<Register>() {
             @Override
-            public void onResponse(Call<Register> call, Response<Register> response) {
+            public void onResponse(@NonNull Call<Register> call, @NonNull Response<Register> response) {
                 if (response.isSuccessful()) {
                 Toast.makeText(SignupActivity.this,"Register Successfully", Toast.LENGTH_SHORT).show();
                     logIn(emailInput, pwdInput);
@@ -111,9 +127,18 @@ String emailInput;
             }
 
             @Override
-            public void onFailure(Call<Register> call, Throwable t) {
+            public void onFailure(@NonNull Call<Register> call, @NonNull Throwable t) {
                 Toast.makeText(SignupActivity.this,"Register Error", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private boolean isValidPassword(String password) {
+        // Regex to match at least 6 characters, one uppercase letter, one lowercase letter, and one digit
+        String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,}$";
+
+        Pattern pattern = Pattern.compile(passwordPattern);
+        Matcher matcher = pattern.matcher(password);
+
+        return matcher.matches();
     }
 }
