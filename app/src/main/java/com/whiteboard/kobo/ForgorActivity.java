@@ -31,6 +31,7 @@ public class ForgorActivity extends AppCompatActivity {
         resetbtn.setOnClickListener(
                 v -> {
                     emailInput = email2.getText().toString();
+                    emailInput = emailInput.trim();
                     forgotPassword(emailInput);
                     new Handler().postDelayed(new Runnable() {
                         @Override

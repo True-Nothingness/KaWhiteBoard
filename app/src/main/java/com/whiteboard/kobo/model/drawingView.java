@@ -1,5 +1,6 @@
 package com.whiteboard.kobo.model;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,12 +9,18 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.os.Environment;
+import android.widget.Toast;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -22,11 +29,13 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 
 import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class drawingView extends View {
@@ -46,7 +55,7 @@ public class drawingView extends View {
     private float mLastTouchY;
     private float mPosX = 0.0f;
     private float mPosY = 0.0f;
-    private boolean isDragging = false;
+    private boolean isDragging, isZooming = false;
     private float originalContentWidth;
     private float originalContentHeight;
     private float previousTranslateX = 0f;
@@ -54,6 +63,7 @@ public class drawingView extends View {
     private ScaleGestureDetector mScaleDetector;
     private Socket socket;
     private String userRole;
+    private final Object lock = new Object();
 
 
     public drawingView(Context context, AttributeSet attrs) {
@@ -84,29 +94,42 @@ public class drawingView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
+
+        // Save the current state of the canvas before applying transformations
         canvas.save();
+
+        // Apply translation (for panning) and scaling (for zooming)
         canvas.translate(mPosX, mPosY);
-        float zoomTranslateX = mPosX * (1 - mScaleFactor);
-        float zoomTranslateY = mPosY * (1 - mScaleFactor);
-        canvas.translate(zoomTranslateX, zoomTranslateY);
         canvas.scale(mScaleFactor, mScaleFactor);
+
+        // Draw the bitmap (the base layer of the drawing)
         canvas.drawBitmap(mCanvasBitmap, 0f, 0f, mCanvasPaint);
-        for (CustomPath path : mPaths) {
-            mDrawPaint.setStrokeWidth(path.brushThickness);
-            mDrawPaint.setColor(path.color);
-            mDrawPaint.setAlpha(path.alpha);
-            canvas.drawPath(path, mDrawPaint);
+
+        // Draw all saved paths
+        synchronized (lock){
+            if (!mPaths.isEmpty()){
+                for (CustomPath path : mPaths) {
+                mDrawPaint.setStrokeWidth(path.brushThickness);
+                mDrawPaint.setColor(path.color);
+                mDrawPaint.setAlpha(path.alpha);
+                canvas.drawPath(path, mDrawPaint);
+                }
+            }
         }
+        // Draw the current path being drawn, if it's not empty
         if (!mDrawPath.isEmpty()) {
             mDrawPaint.setStrokeWidth(mDrawPath.brushThickness);
             mDrawPaint.setColor(mDrawPath.color);
             mDrawPaint.setAlpha(mDrawPath.alpha);
             canvas.drawPath(mDrawPath, mDrawPaint);
         }
+
+        // Restore the canvas to its original state
         canvas.restore();
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -115,7 +138,7 @@ public class drawingView extends View {
         float touchY = (event.getY() - mPosY) / mScaleFactor;
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if(!isDragging){
+                if(!isDragging && !isZooming){
                     if ("Viewer".equals(userRole)) {
                         // User has Viewer role, don't process touch events
                         break;
@@ -131,21 +154,15 @@ public class drawingView extends View {
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (isDragging) {
-                    float dx = touchX - mLastTouchX;
-                    float dy = touchY - mLastTouchY;
-                    float newTranslateX = mPosX + dx;
-                    float newTranslateY = mPosY + dy;
-                    float maxTranslateX = originalContentWidth * (mScaleFactor - 1);
-                    float maxTranslateY = originalContentHeight * (mScaleFactor - 1);
-                    newTranslateX = Math.max(0, Math.min(newTranslateX, maxTranslateX));
-                    newTranslateY = Math.max(0, Math.min(newTranslateY, maxTranslateY));
+                    float dx = event.getX() - mLastTouchX;
+                    float dy = event.getY() - mLastTouchY;
 
-                    canvas.translate(newTranslateX - mPosX, newTranslateY - mPosY);
-                    mLastTouchX = touchX;
-                    mLastTouchY = touchY;
-                    // Translate the canvas
-                    canvas.translate(dx, dy);
-                } else {
+                    mPosX += dx / mScaleFactor;
+                    mPosY += dy / mScaleFactor;
+
+                    mLastTouchX = event.getX();
+                    mLastTouchY = event.getY();
+                } else if (!isZooming) {
                     if ("Viewer".equals(userRole)) {
                         // User has Viewer role, don't process touch events
                         break;
@@ -155,13 +172,16 @@ public class drawingView extends View {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if ("Viewer".equals(userRole)) {
-                    // User has Viewer role, don't process touch events
-                    break;
+                if (!isZooming) {  // Avoid drawing while zooming
+                    if ("Viewer".equals(userRole)) {
+                        // User has Viewer role, don't process touch events
+                        break;
+                    }
+                    // Finish the current path and add it to the list of paths
+                    mPaths.add(mDrawPath);
+                    emitDrawEvent(mDrawPath);
+                    mDrawPath = new CustomPath(currentColor, mBrushSize, mAlpha);
                 }
-                mPaths.add(mDrawPath);
-                emitDrawEvent(mDrawPath);
-                mDrawPath = new CustomPath(currentColor, mBrushSize, mAlpha);
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 isDragging = true;
@@ -216,7 +236,7 @@ public class drawingView extends View {
     }
 
     public void undo() {
-        if (mPaths.size() > 0) {
+        if (!mPaths.isEmpty()) {
             mUndoPath.add(mPaths.get(mPaths.size() - 1));
             mPaths.remove(mPaths.size() - 1);
             emitUndoEvent();
@@ -224,7 +244,7 @@ public class drawingView extends View {
         }
     }
     public void undo2() {
-        if (mPaths.size() > 0) {
+        if (!mPaths.isEmpty()) {
             mUndoPath.add(mPaths.get(mPaths.size() - 1));
             mPaths.remove(mPaths.size() - 1);
             invalidate();
@@ -232,7 +252,7 @@ public class drawingView extends View {
     }
 
     public void redo() {
-        if (mUndoPath.size() > 0) {
+        if (!mUndoPath.isEmpty()) {
             mPaths.add(mUndoPath.get(mUndoPath.size() - 1));
             mUndoPath.remove(mUndoPath.size() - 1);
             emitRedoEvent();
@@ -240,7 +260,7 @@ public class drawingView extends View {
         }
     }
     public void redo2() {
-        if (mUndoPath.size() > 0) {
+        if (!mUndoPath.isEmpty()) {
             mPaths.add(mUndoPath.get(mUndoPath.size() - 1));
             mUndoPath.remove(mUndoPath.size() - 1);
             invalidate();
@@ -289,15 +309,22 @@ public class drawingView extends View {
     private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
-            float focusX = detector.getFocusX();
-            float focusY = detector.getFocusY();
             mScaleFactor *= detector.getScaleFactor();
             mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 3.0f)); // Limit the scale factor
-            mPosX = (focusX - mPosX) * (1 - mScaleFactor) + mPosX;
-            mPosY = (focusY - mPosY) * (1 - mScaleFactor) + mPosY;
             invalidate();
             return true;
         }
+        @Override
+        public boolean onScaleBegin(@NonNull ScaleGestureDetector detector) {
+            isZooming = true;  // Zooming starts
+            return true;
+        }
+
+        @Override
+        public void onScaleEnd(@NonNull ScaleGestureDetector detector) {
+            isZooming = false;  // Zooming ends
+        }
+
     }
     public void emitDrawEvent(CustomPath customPath) {
         try {
@@ -340,19 +367,56 @@ public class drawingView extends View {
             float y = (float) pointObject.getDouble("y");
             path.lineTo(x, y);
         }
-        mPaths.add(path);
+        synchronized (lock){
+            mPaths.add(path);
+        }
         invalidate();
     }
-    public void exportAsPng(String filePath) {
-        // Save the Bitmap (mCanvasBitmap) as a PNG file
-        try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
-            mCanvasBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            // Provide feedback or handle success
+    public void saveImageToGallery(String fileName) {
+        Bitmap bitmap = mCanvasBitmap; // The bitmap to save
+        Log.d("Bitmap Info", "Width: " + bitmap.getWidth() + ", Height: " + bitmap.getHeight());
+        // Check if bitmap is initialized and has content
+        if (bitmap.getWidth() == 0 || bitmap.getHeight() == 0) {
+            Toast.makeText(getContext(), "No content to save", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Add the .png extension if not present
+        if (!fileName.toLowerCase().endsWith(".png")) {
+            fileName += ".png";
+        }
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+
+        // For Android Q (API 29) and above, specify the relative path to the Pictures directory
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+        }
+
+        // Insert the image in MediaStore
+        Uri uri = getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        // Check if the insertion was successful
+        if (uri == null) {
+            Toast.makeText(getContext(), "Failed to insert image into MediaStore", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try (OutputStream outputStream = getContext().getContentResolver().openOutputStream(uri)) {
+            // Compress the bitmap and save it to the stream
+            if (outputStream != null) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                Toast.makeText(getContext(), "Image saved as " + fileName, Toast.LENGTH_LONG).show();
+            }
         } catch (IOException e) {
-            // Handle the exception (e.g., log an error)
             e.printStackTrace();
+            Toast.makeText(getContext(), "Failed to save image", Toast.LENGTH_SHORT).show();
         }
     }
+
+
     public void drawBitmap(Bitmap bitmap, int i, int i1, Object o){
 
     }

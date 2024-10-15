@@ -11,31 +11,31 @@
     android:backgroundTint="@color/white"
     android:background="@color/white">
 
-    <LinearLayout
-        android:id="@+id/itemContainer1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="20dp">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/itemContainer1"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="vertical"-->
+<!--        android:padding="20dp">-->
 
-        <ImageButton
-            android:id="@+id/itemButton1"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:backgroundTint="@android:color/transparent"
-            android:contentDescription="Insert Text"
-            android:src="@drawable/title_fill0_wght400_grad0_opsz24"
-            android:textColor="@color/black" />
+<!--        <ImageButton-->
+<!--            android:id="@+id/itemButton1"-->
+<!--            android:layout_width="48dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:backgroundTint="@android:color/transparent"-->
+<!--            android:contentDescription="Insert Text"-->
+<!--            android:src="@drawable/title_fill0_wght400_grad0_opsz24"-->
+<!--            android:textColor="@color/black" />-->
 
-        <TextView
-            android:id="@+id/itemLabel1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Text"
-            android:textSize="16sp"
-            android:textColor="@color/black"/>
-    </LinearLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/itemLabel1"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Text"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textColor="@color/black"/>-->
+<!--    </LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/itemContainer2"
@@ -116,83 +116,83 @@
             android:textColor="@color/black"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/itemContainer5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="20dp">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/itemContainer5"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="vertical"-->
+<!--        android:padding="20dp">-->
 
-        <ImageButton
-            android:id="@+id/itemButton5"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:backgroundTint="@android:color/transparent"
-            android:contentDescription="Draw shapes"
-            android:src="@drawable/shapes_fill0_wght400_grad0_opsz24"
-            android:textColor="@color/black" />
+<!--        <ImageButton-->
+<!--            android:id="@+id/itemButton5"-->
+<!--            android:layout_width="48dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:backgroundTint="@android:color/transparent"-->
+<!--            android:contentDescription="Draw shapes"-->
+<!--            android:src="@drawable/shapes_fill0_wght400_grad0_opsz24"-->
+<!--            android:textColor="@color/black" />-->
 
-        <TextView
-            android:id="@+id/itemLabel5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shapes"
-            android:textSize="16sp"
-            android:textColor="@color/black"/>
-    </LinearLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/itemLabel5"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Shapes"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textColor="@color/black"/>-->
+<!--    </LinearLayout>-->
 
-    <LinearLayout
-        android:id="@+id/itemContainer6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="20dp">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/itemContainer6"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="vertical"-->
+<!--        android:padding="20dp">-->
 
-        <ImageButton
-            android:id="@+id/itemButton6"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:backgroundTint="@android:color/transparent"
-            android:contentDescription="Insert images"
-            android:src="@drawable/imagesmode_fill0_wght400_grad0_opsz24"
-            android:textColor="@color/black" />
+<!--        <ImageButton-->
+<!--            android:id="@+id/itemButton6"-->
+<!--            android:layout_width="48dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:backgroundTint="@android:color/transparent"-->
+<!--            android:contentDescription="Insert images"-->
+<!--            android:src="@drawable/imagesmode_fill0_wght400_grad0_opsz24"-->
+<!--            android:textColor="@color/black" />-->
 
-        <TextView
-            android:id="@+id/itemLabel6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="Images"
-            android:textColor="@color/black"/>
-    </LinearLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/itemLabel6"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="16sp"-->
+<!--            android:text="Images"-->
+<!--            android:textColor="@color/black"/>-->
+<!--    </LinearLayout>-->
 
-    <LinearLayout
-        android:id="@+id/itemContainer7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="20dp">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/itemContainer7"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="center"-->
+<!--        android:orientation="vertical"-->
+<!--        android:padding="20dp">-->
 
-        <ImageButton
-            android:id="@+id/itemButton7"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:backgroundTint="@android:color/transparent"
-            android:contentDescription="Scan text from images"
-            android:src="@drawable/document_scanner_fill0_wght400_grad0_opsz24"
-            android:textColor="@color/black" />
+<!--        <ImageButton-->
+<!--            android:id="@+id/itemButton7"-->
+<!--            android:layout_width="48dp"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:backgroundTint="@android:color/transparent"-->
+<!--            android:contentDescription="Scan text from images"-->
+<!--            android:src="@drawable/document_scanner_fill0_wght400_grad0_opsz24"-->
+<!--            android:textColor="@color/black" />-->
 
-        <TextView
-            android:id="@+id/itemLabel7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Scanner"
-            android:textSize="16sp"
-            android:textColor="@color/black"/>
-    </LinearLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/itemLabel7"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Scanner"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textColor="@color/black"/>-->
+<!--    </LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/itemContainer8"

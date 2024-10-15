@@ -41,6 +41,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -82,7 +83,7 @@ public class BoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board);
         try {
-            socket = IO.socket("http://192.168.0.106:5000/");
+            socket = IO.socket("http://192.168.0.101:5000/");
             socket.connect();
             SocketManager.setSocket(socket);
         } catch (URISyntaxException e) {
@@ -107,12 +108,18 @@ public class BoardActivity extends AppCompatActivity {
         set = findViewById(R.id.set);
         // Find the current user in the list
         UserResponse currentUser = null;
-        for (UserResponse user : CurrentBoard.getInstance().getUsers()) {
-            if (UserData.getInstance().getId().equals(user.getId())) {
-                currentUser = user;
-                break;
+        List<UserResponse> users = CurrentBoard.getInstance().getUsers();
+        if (users != null) {
+            for (UserResponse user : users) {
+                if (UserData.getInstance().getId().equals(user.getId())) {
+                    currentUser = user;
+                    break;
+                }
             }
+        } else {
+            Log.e("NullPointerException", "User list is null");
         }
+
         // Check the role of the current user
         if (currentUser != null) {
             String currentUserRole = currentUser.getRole();

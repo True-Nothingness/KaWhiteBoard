@@ -45,12 +45,13 @@ String pwdInput, nameInput, emailInput, confirmPwd;
                     pwdInput = password2.getText().toString();
                     confirmPwd = confirmPassword2.getText().toString();
                     nameInput = nameInput.trim();
+                    emailInput = emailInput.trim();
                     if (nameInput.length() < 6) {
                         Toast.makeText(SignupActivity.this, "Username must be at least 6 characters long!", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     if (!isValidPassword(pwdInput)) {
-                        Toast.makeText(SignupActivity.this, "Password must be at least 6 characters long and include at least one uppercase letter, one lowercase letter, and one digit.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignupActivity.this, "Password must be at least 6, at most 20 characters long, and include at least 1 uppercase letter, 1 lowercase letter, and 1 digit.", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     // Check if confirm password matches password
@@ -134,7 +135,7 @@ String pwdInput, nameInput, emailInput, confirmPwd;
     }
     private boolean isValidPassword(String password) {
         // Regex to match at least 6 characters, one uppercase letter, one lowercase letter, and one digit
-        String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,}$";
+        String passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,20}$";
 
         Pattern pattern = Pattern.compile(passwordPattern);
         Matcher matcher = pattern.matcher(password);

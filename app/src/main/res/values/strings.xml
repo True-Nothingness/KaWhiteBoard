@@ -9,7 +9,7 @@
     <string name="login" translatable="false">Log In</string>
     <string name="signup" translatable="false">Sign Up</string>
     <string name="limit" translatable="false">At least 6 characters</string>
-    <string name="pwdReq" translatable="false">At least 6 characters, one uppercase, one lowercase, one number</string>
+    <string name="pwdReq" translatable="false">At least 6 characters, at most 20, 1 uppercase, 1 lowercase, 1 number</string>
     <string name="my_files" translatable="false">
 My Files
 </string>

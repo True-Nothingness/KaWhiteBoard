@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
                 v -> {
                     emailInput = email2.getText().toString();
                     pwdInput = password2.getText().toString();
+                    emailInput = emailInput.trim();
                     logIn(emailInput, pwdInput);
                 }
         );
