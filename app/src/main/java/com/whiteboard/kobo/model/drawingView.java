@@ -7,8 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -21,14 +21,10 @@ import android.view.View;
 import android.os.Environment;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+
 import java.io.IOException;
-import io.socket.client.IO;
 import io.socket.client.Socket;
 
-import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
 import org.json.JSONArray;
@@ -56,8 +52,7 @@ public class drawingView extends View {
     private float mPosX = 0.0f;
     private float mPosY = 0.0f;
     private boolean isDragging, isZooming = false;
-    private float originalContentWidth;
-    private float originalContentHeight;
+    private int originalContentWidth, originalContentHeight;
     private float previousTranslateX = 0f;
     private float previousTranslateY = 0f;
     private ScaleGestureDetector mScaleDetector;
@@ -91,6 +86,7 @@ public class drawingView extends View {
         originalContentHeight = h;
         mCanvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         canvas = new Canvas(mCanvasBitmap);
+        canvas.drawColor(Color.WHITE);
     }
 
     @Override
@@ -117,6 +113,7 @@ public class drawingView extends View {
                 canvas.drawPath(path, mDrawPaint);
                 }
             }
+            commitSavedPathsToBitmap();
         }
         // Draw the current path being drawn, if it's not empty
         if (!mDrawPath.isEmpty()) {
@@ -241,6 +238,8 @@ public class drawingView extends View {
             mPaths.remove(mPaths.size() - 1);
             emitUndoEvent();
             invalidate();
+            canvas.drawColor(Color.WHITE);
+            commitSavedPathsToBitmap();
         }
     }
     public void undo2() {
@@ -248,6 +247,8 @@ public class drawingView extends View {
             mUndoPath.add(mPaths.get(mPaths.size() - 1));
             mPaths.remove(mPaths.size() - 1);
             invalidate();
+            canvas.drawColor(Color.WHITE);
+            commitSavedPathsToBitmap();
         }
     }
 
@@ -257,6 +258,8 @@ public class drawingView extends View {
             mUndoPath.remove(mUndoPath.size() - 1);
             emitRedoEvent();
             invalidate();
+            canvas.drawColor(Color.WHITE);
+            commitSavedPathsToBitmap();
         }
     }
     public void redo2() {
@@ -264,6 +267,8 @@ public class drawingView extends View {
             mPaths.add(mUndoPath.get(mUndoPath.size() - 1));
             mUndoPath.remove(mUndoPath.size() - 1);
             invalidate();
+            canvas.drawColor(Color.WHITE);
+            commitSavedPathsToBitmap();
         }
     }
 
@@ -326,6 +331,18 @@ public class drawingView extends View {
         }
 
     }
+    private void commitSavedPathsToBitmap() {
+        for (CustomPath path : mPaths) {
+            // Set the paint properties for each path
+            mDrawPaint.setStrokeWidth(path.brushThickness);
+            mDrawPaint.setColor(path.color);
+            mDrawPaint.setAlpha(path.alpha);
+
+            // Draw each saved path onto the bitmap's canvas
+            canvas.drawPath(path, mDrawPaint);
+        }
+    }
+
     public void emitDrawEvent(CustomPath customPath) {
         try {
             JSONObject drawData = new JSONObject();
@@ -373,10 +390,27 @@ public class drawingView extends View {
         invalidate();
     }
     public void saveImageToGallery(String fileName) {
-        Bitmap bitmap = mCanvasBitmap; // The bitmap to save
-        Log.d("Bitmap Info", "Width: " + bitmap.getWidth() + ", Height: " + bitmap.getHeight());
+        // Calculate bounds
+        float minX = Float.MAX_VALUE;
+        float minY = Float.MAX_VALUE;
+        float maxX = Float.MIN_VALUE;
+        float maxY = Float.MIN_VALUE;
+
+        for (CustomPath path : mPaths) {
+            RectF bounds = new RectF();
+            path.computeBounds(bounds, true);
+            minX = Math.min(minX, bounds.left);
+            minY = Math.min(minY, bounds.top);
+            maxX = Math.max(maxX, bounds.right);
+            maxY = Math.max(maxY, bounds.bottom);
+        }
+        // Calculate bitmap dimensions based on adjusted bounds
+        int newWidth = Math.round(maxX - minX);
+        int newHeight = Math.round(maxY - minY);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(mCanvasBitmap, newWidth, newHeight, true);
+        Log.d("Bitmap Info", "Width: " + scaledBitmap.getWidth() + ", Height: " + scaledBitmap.getHeight());
         // Check if bitmap is initialized and has content
-        if (bitmap.getWidth() == 0 || bitmap.getHeight() == 0) {
+        if (scaledBitmap.getWidth() == 0 || scaledBitmap.getHeight() == 0) {
             Toast.makeText(getContext(), "No content to save", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -407,7 +441,7 @@ public class drawingView extends View {
         try (OutputStream outputStream = getContext().getContentResolver().openOutputStream(uri)) {
             // Compress the bitmap and save it to the stream
             if (outputStream != null) {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                scaledBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
                 Toast.makeText(getContext(), "Image saved as " + fileName, Toast.LENGTH_LONG).show();
             }
         } catch (IOException e) {
